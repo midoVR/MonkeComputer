@@ -62,7 +62,7 @@ namespace GorillaUI
 
                 PlayerDisplayInfo info;
                 info.color = rig->materialsToChangeTo->values[0]->get_color();
-                info.isTagged = get_isTagged(rig);
+                info.isTagged = BaseGameInterface::Player::get_isInfected(rig);
                 Photon::Realtime::Player* player = rig->get_photonView() ? rig->get_photonView()->get_Owner() : nullptr;
 
                 if (player)
@@ -101,7 +101,7 @@ namespace GorillaUI
     
     void ScoreboardView::DrawHeader()
     {
-        text += "<color=#ffff00>== Scoreboard ==</color>\n";
+        text += "<color=#ffff00>== <color=#fdfdfd>Scoreboard</color> ==</color>\n";
         Photon::Realtime::Room* currentRoom = PhotonNetwork::get_CurrentRoom();
         if (currentRoom)
         {
@@ -146,7 +146,7 @@ namespace GorillaUI
         selectionHandler->HandleKey((EKeyboardKey)key);
         Redraw();
     }
-
+    /*
     bool ScoreboardView::get_isTagged(GlobalNamespace::VRRig* rig)
     {
         using namespace GlobalNamespace;
@@ -164,4 +164,5 @@ namespace GorillaUI
             return gorillaTagManager->currentInfected->Contains(rig->get_photonView()->get_Owner());
         }
     }
+    */
 }

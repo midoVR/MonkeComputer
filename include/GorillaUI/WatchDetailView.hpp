@@ -3,7 +3,7 @@
 #include "custom-types/shared/macros.hpp"
 #include "ViewLib/View.hpp"
 
-DECLARE_CLASS_CODEGEN(GorillaUI, DetailView, GorillaUI::Components::View, 
+DECLARE_CLASS_CODEGEN(GorillaUI, WatchDetailView, GorillaUI::Components::View, 
     DECLARE_METHOD(void, DidActivate, bool firstActivation);
     DECLARE_METHOD(void, Redraw);
     DECLARE_METHOD(void, DrawHeader);

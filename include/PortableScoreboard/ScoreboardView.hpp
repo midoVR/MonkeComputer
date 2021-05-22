@@ -24,7 +24,7 @@ DECLARE_CLASS_CODEGEN(GorillaUI, ScoreboardView, GorillaUI::Components::View,
     public:
         GorillaUI::UISelectionHandler* selectionHandler = nullptr;
         std::vector<PlayerDisplayInfo> playerInfos = {};
-        static bool get_isTagged(GlobalNamespace::VRRig* rig);
+        //static bool get_isTagged(GlobalNamespace::VRRig* rig);
 
     REGISTER_FUNCTION(
         REGISTER_METHOD(Awake);

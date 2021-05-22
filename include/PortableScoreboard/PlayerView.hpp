@@ -27,7 +27,6 @@ DECLARE_CLASS_CODEGEN(GorillaUI, PlayerView, GorillaUI::Components::View,
     public:
         GorillaUI::UISelectionHandler* selectionHandler = nullptr;
         PlayerDisplayInfo playerInfo;
-        static GlobalNamespace::VRRig* FindVRRigForUserID(std::string userID);
         static std::vector<GlobalNamespace::GorillaPlayerScoreboardLine*> FindScoreboardLineForUserID(std::string userID);
 
     REGISTER_FUNCTION(

@@ -46,6 +46,10 @@ namespace GorillaUI
     void ReportView::Report(int index)
     {
         if (!PhotonNetwork::get_InRoom()) return;
+        
+        auto* rig = BaseGameInterface::Player::get_VRRig(playerInfo.playerID);
+        if (!rig) return;
+
         ReportUser::ReportUser(playerInfo.playerID, index);
     }
 
@@ -61,11 +65,18 @@ namespace GorillaUI
     
     void ReportView::DrawHeader()
     {
-        text += "<color=#ffff00>== Report User ==</color>\n";
+        text += "<color=#ffff00>== <color=#fdfdfd>Report User</color> ==</color>\n";
     }
     
     void ReportView::DrawReportOptions()
     {
+        auto* rig = BaseGameInterface::Player::get_VRRig(playerInfo.playerID);
+        if (!rig)
+        {
+            text += "\nUser was no longer in this room";
+            return;
+        }
+
         text += string_format("\n Report %s ?\n\n", playerInfo.nickName.c_str());
         
         if (ReportUser::get_isReported(playerInfo.playerID))

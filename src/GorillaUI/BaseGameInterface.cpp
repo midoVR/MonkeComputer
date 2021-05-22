@@ -24,9 +24,14 @@
 #include "GlobalNamespace/GorillaComputer.hpp"
 #include "GlobalNamespace/GorillaTagManager.hpp"
 #include "GlobalNamespace/GorillaTagger.hpp"
+#include "GlobalNamespace/GorillaParent.hpp"
 #include "GlobalNamespace/GorillaScoreboardSpawner.hpp"
 #include "GlobalNamespace/VRRig.hpp"
 #include "GlobalNamespace/PhotonNetworkController.hpp"
+
+#include "System/Collections/Generic/Dictionary_2.hpp"
+#include "ExitGames/Client/Photon/Hashtable.hpp"
+
 
 #include "UnityEngine/XR/Interaction/Toolkit/GorillaSnapTurn.hpp"
 
@@ -497,5 +502,60 @@ namespace GorillaUI::BaseGameInterface
             Il2CppString* value = PlayerPrefs::GetString(voiceChatOn, defaultVal);
             return value ? value->Contains(defaultVal) : true;
         }
+    }
+
+    namespace Player
+    {
+        GlobalNamespace::VRRig* get_VRRig(std::string userID)
+        {
+            Array<GlobalNamespace::VRRig*>* rigs = GlobalNamespace::GorillaParent::_get_instance()->GetComponentsInChildren<GlobalNamespace::VRRig*>();
+
+            for (int i = 0; i < rigs->Length(); i++)
+            {
+                GlobalNamespace::VRRig* rig = rigs->values[i];
+                Photon::Realtime::Player* player = rig->get_photonView() ? rig->get_photonView()->get_Owner() : nullptr;
+
+                if (player && userID.find(to_utf8(csstrtostr(player->get_UserId()))) != std::string::npos) return rig;
+            }
+
+            return nullptr;
+        }
+
+        bool get_isInfected()
+        {
+            return get_isInfected(PhotonNetwork::get_LocalPlayer());
+        }
+
+        bool get_isInfected(std::string userID)
+        {
+            return get_isInfected(get_VRRig(userID));
+        }
+
+        bool get_isInfected(GlobalNamespace::VRRig* rig)
+        {
+            if (!rig) return false;
+            Photon::Realtime::Player* player = rig->get_photonView()->get_Owner();
+
+            return get_isInfected(player);
+        }
+
+        bool get_isInfected(Photon::Realtime::Player* player)
+        {
+            if (!player) return false;
+            using namespace GlobalNamespace;
+            if (!PhotonNetwork::get_InRoom()) return false;
+            GorillaTagManager* gorillaTagManager = GorillaTagManager::_get_instance();
+
+            gorillaTagManager->CopyRoomDataToLocalData();
+
+            if (gorillaTagManager->isCurrentlyTag)
+            {
+                return gorillaTagManager->currentIt->Equals(player);
+            }
+            else
+            {
+                return gorillaTagManager->currentInfected->Contains(player);
+            }
+        }   
     }
 }

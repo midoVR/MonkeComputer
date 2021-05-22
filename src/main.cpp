@@ -9,6 +9,7 @@
 #include "custom-types/shared/register.hpp"
 #include "GorillaUI.hpp"
 #include "GorillaUI/DetailView.hpp"
+#include "GorillaUI/WatchDetailView.hpp"
 #include "GorillaUI/MainView.hpp"
 #include "GorillaUI/MainWatchView.hpp"
 #include "GorillaUI/MainViewManager.hpp"
@@ -241,6 +242,7 @@ void loadlib()
     custom_types::Register::RegisterType<CustomQueueView>();
     custom_types::Register::RegisterType<MonkeComputerConfigView>();
     custom_types::Register::RegisterType<BackgroundsView>();
+    custom_types::Register::RegisterType<WatchDetailView>();
 
     GorillaUI::Register::RegisterViewManager<BaseGameViewManager*>("Game Settings", "1.0.4");
     GorillaUI::Register::RegisterViewManager<ModSettingsViewManager*>("Mod Settings", VERSION);
@@ -251,6 +253,8 @@ void loadlib()
     GorillaUI::Register::RegisterSettingsView<BackgroundsView*>("Custom Backgrounds", VERSION);
     
     GorillaUI::Register::RegisterWatchViewManager<ScoreboardViewManager*>("Scoreboard", VERSION);
+    GorillaUI::Register::RegisterWatchView<WatchDetailView*>("Details", VERSION);
+    
     GorillaUI::Register::RegisterWatchCallback("Disconnect", VERSION, []{
         BaseGameInterface::Disconnect();
     });

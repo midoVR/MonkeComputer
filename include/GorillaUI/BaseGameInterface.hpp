@@ -4,6 +4,16 @@
 
 #include "UnityEngine/Color.hpp"
 
+namespace GlobalNamespace
+{
+    class VRRig;
+}
+
+namespace Photon::Realtime
+{
+    class Player;
+}
+
 namespace GorillaUI::BaseGameInterface
 {
     void SetColor(float r, float g, float b);
@@ -80,5 +90,15 @@ namespace GorillaUI::BaseGameInterface
     namespace Voice
     {
         bool get_voiceChat();
+    }
+
+    namespace Player
+    {
+        GlobalNamespace::VRRig* get_VRRig(std::string userID);
+        bool get_isInfected();
+        bool get_isInfected(GlobalNamespace::VRRig* rig);
+        bool get_isInfected(Photon::Realtime::Player* player);
+        bool get_isInfected(std::string userID);
+
     }
 }

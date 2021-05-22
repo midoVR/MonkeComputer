@@ -63,10 +63,9 @@ namespace GorillaUI
         {
             // mute / unmute player
             case 0:
-                rig = FindVRRigForUserID(playerInfo.playerID);
+                rig = BaseGameInterface::Player::get_VRRig(playerInfo.playerID);
                 if (!rig)
                 {
-                    text += "User was no longer in this room";
                     break;
                 }
 
@@ -109,12 +108,12 @@ namespace GorillaUI
     
     void PlayerView::DrawHeader()
     {
-        text += "<color=#ffff00>== Player ==</color>\n";
+        text += "<color=#ffff00>== <color=#fdfdfd>Player</color> ==</color>\n";
     }
     
     void PlayerView::DrawBody()
     {
-        auto* rig = FindVRRigForUserID(playerInfo.playerID);
+        auto* rig = BaseGameInterface::Player::get_VRRig(playerInfo.playerID);
         if (!rig)
         {
             text += "\nUser was no longer in this room";
@@ -127,7 +126,7 @@ namespace GorillaUI
         // if clicked user is our player
         if (localUser.find(playerInfo.playerID) != std::string::npos)
         {
-            text += "\n This is You!,\n you can't mute or report yourself";
+            text += "\n This is You!,\n you can't mute or\n report yourself";
             return;
         }
 
@@ -147,21 +146,6 @@ namespace GorillaUI
     {
         selectionHandler->HandleKey((EKeyboardKey)key);
         Redraw();
-    }
-
-    GlobalNamespace::VRRig* PlayerView::FindVRRigForUserID(std::string userID)
-    {
-        Array<GlobalNamespace::VRRig*>* rigs = GlobalNamespace::GorillaParent::_get_instance()->GetComponentsInChildren<GlobalNamespace::VRRig*>();
-
-        for (int i = 0; i < rigs->Length(); i++)
-        {
-            GlobalNamespace::VRRig* rig = rigs->values[i];
-            Photon::Realtime::Player* player = rig->get_photonView() ? rig->get_photonView()->get_Owner() : nullptr;
-            
-            if (player && userID.find(to_utf8(csstrtostr(player->get_UserId()))) != std::string::npos) return rig;
-        }
-
-        return nullptr;
     }
 
     std::vector<GlobalNamespace::GorillaPlayerScoreboardLine*> PlayerView::FindScoreboardLineForUserID(std::string userID)

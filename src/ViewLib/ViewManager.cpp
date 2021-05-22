@@ -1,4 +1,5 @@
 #include "ViewLib/ViewManager.hpp"
+#include "ViewLib/MonkeWatch.hpp"
 #include "KeyExtension.hpp"
 #include "typedefs.h"
 #include "ViewLib/CustomComputer.hpp"
@@ -13,6 +14,14 @@ using namespace UnityEngine;
 
 namespace GorillaUI::Components
 {
+    void ViewManager::ctor()
+    {
+        parentViewManager = nullptr;
+        childViewManager = nullptr;
+        computer = nullptr;
+        watch = nullptr;
+    }
+    
     void ViewManager::Activate()
     {
         auto* didActivate = il2cpp_functions::class_get_method_from_name(il2cpp_utils::ExtractClass (this), "DidActivate", 1);
@@ -21,7 +30,15 @@ namespace GorillaUI::Components
 
         if (activeView)
         {
-            activeView->computer = computer;
+            if (computer)
+            {
+                activeView->computer = computer;
+            }
+            else if (watch)
+            {
+                activeView->watch = watch;
+            }
+
             activeView->Activate();
         }
         activatedBefore = true;
@@ -38,10 +55,20 @@ namespace GorillaUI::Components
     {
         childViewManager = manager;
         manager->parentViewManager = this;
-        manager->computer = computer;
+
+        if (computer)
+        {
+            manager->computer = computer;
+            computer->activeViewManager = manager;
+        }
+        else if (watch)
+        {
+            manager->watch = watch;
+            watch->activeViewManager = manager;
+        }
+
         activeView->Deactivate();
         manager->Activate();
-        computer->activeViewManager = manager;
     }
 
     void ViewManager::DismissViewManager(GorillaUI::Components::ViewManager* manager)
@@ -50,16 +77,39 @@ namespace GorillaUI::Components
         manager->activeView->Deactivate();
         manager->Deactivate();
         activeView->Activate();
-        computer->activeViewManager = this;
-        CustomComputer::Redraw();
+        if (computer)
+        {
+            computer->activeViewManager = this;
+            CustomComputer::Redraw();
+        }
+        else if (watch)
+        {
+            watch->activeViewManager = this;
+            MonkeWatch::Redraw();
+        }
     }
 
     void ViewManager::ReplaceTopView(GorillaUI::Components::View* view)
     {
         if (activeView) activeView->Deactivate();
-        view->computer = computer;
+        if (computer)
+        {
+            view->computer = computer;
+        }
+        else if (watch)
+        {
+            view->watch = watch;
+        }
         activeView = view;
         activeView->Activate();
-        CustomComputer::Redraw();
+
+        if (computer)
+        {
+            CustomComputer::Redraw();
+        }
+        else if (watch)
+        {
+            MonkeWatch::Redraw();
+        }
     }
 }

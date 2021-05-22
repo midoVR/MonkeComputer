@@ -7,6 +7,8 @@
 namespace GorillaUI
 {
     class CustomComputer;
+    class MonkeWatch;
+    
     namespace Components
     {
         class ViewManager; 
@@ -22,7 +24,7 @@ DECLARE_CLASS_CODEGEN(GorillaUI::Components, View, UnityEngine::MonoBehaviour,
     public:
         std::string text = "";
         GorillaUI::CustomComputer* computer = nullptr;
-
+        GorillaUI::MonkeWatch* watch = nullptr;
     REGISTER_FUNCTION(
         REGISTER_METHOD(Activate);
         REGISTER_METHOD(Deactivate);

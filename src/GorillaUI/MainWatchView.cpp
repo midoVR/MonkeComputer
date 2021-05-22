@@ -28,7 +28,7 @@ namespace GorillaUI
         {
             selectionHandler->max = entryCount;
         }
-
+        
         screenSaver = true;
     }
 
@@ -36,9 +36,7 @@ namespace GorillaUI
     {
         std::function<void(int)> fun = std::bind(&MainWatchView::ShowView, this, std::placeholders::_1);
         selectionHandler->selectionCallback = fun;
-        
-        if (!firstActivation)
-            Redraw();
+        if (!firstActivation && !screenSaver) Redraw();
     }
 
     void MainWatchView::ShowView(int index)

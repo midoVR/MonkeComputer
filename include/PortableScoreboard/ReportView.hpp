@@ -7,32 +7,29 @@
 #include "GorillaUI/ModSettingsView/ModSettingsViewManager.hpp"
 #include "GorillaUI/BaseGameViews/BaseGameViewManager.hpp"
 #include "GorillaUI/DetailView.hpp"
+#include "PortableScoreboard/PlayerDisplayInfo.hpp"
+#include <vector>
 
-DECLARE_CLASS_CODEGEN(GorillaUI, MainWatchView, GorillaUI::Components::View, 
+DECLARE_CLASS_CODEGEN(GorillaUI, ReportView, GorillaUI::Components::View, 
     DECLARE_METHOD(void, Awake);
-    DECLARE_METHOD(void, ShowView, int index);
+    DECLARE_METHOD(void, Report, int index);
     DECLARE_METHOD(void, DidActivate, bool firstActivation);
     DECLARE_METHOD(void, Redraw);
     DECLARE_METHOD(void, DrawHeader);
-    DECLARE_METHOD(void, DrawSubMenus);
+    DECLARE_METHOD(void, DrawReportOptions);
     DECLARE_METHOD(void, OnKeyPressed, int key);
-    DECLARE_INSTANCE_FIELD(int, entryCount);
-    DECLARE_INSTANCE_FIELD(int, pageCount);
 
     public:
         GorillaUI::UISelectionHandler* selectionHandler = nullptr;
-        GorillaUI::UISelectionHandler* pageSelectionHandler = nullptr;
-        bool screenSaver = true;
+        PlayerDisplayInfo playerInfo;
 
     REGISTER_FUNCTION(
         REGISTER_METHOD(Awake);
-        REGISTER_METHOD(ShowView);
+        REGISTER_METHOD(Report);
         REGISTER_METHOD(DidActivate);
         REGISTER_METHOD(Redraw);
         REGISTER_METHOD(DrawHeader);
-        REGISTER_METHOD(DrawSubMenus);
+        REGISTER_METHOD(DrawReportOptions);
         REGISTER_METHOD(OnKeyPressed);
-        REGISTER_FIELD(entryCount);
-        REGISTER_FIELD(pageCount);
     )
 )

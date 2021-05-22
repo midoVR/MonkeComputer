@@ -18,7 +18,6 @@ namespace GorillaUI::Components
 {
     void WatchActivatorTrigger::Awake()
     {
-        getLogger().info("Activator Trigger component created!");
 
         get_gameObject()->set_layer(18);
         get_gameObject()->GetComponent<Collider*>()->set_isTrigger(true);
@@ -31,7 +30,6 @@ namespace GorillaUI::Components
 
     void WatchActivatorTrigger::OnTriggerEnter(Collider* collider)
     {
-        getLogger().info("Activator Trigger Triggered");
 
         if (MonkeWatch::get_instance()->isActive) return;
         if (!IsUpright()) return;

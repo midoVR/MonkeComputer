@@ -85,18 +85,7 @@ namespace GorillaUI
             newMonitor = package->get_transform()->Find(il2cpp_utils::createcsstr("Monitor"))->get_gameObject();
 
             // I shouldnt be doing this here but it would crash otherwise so fuck it
-            GameObject* watchObj = GameObject::New_ctor();
-            GlobalNamespace::TransformFollow* follow = watchObj->AddComponent<GlobalNamespace::TransformFollow*>();
-            watchObj->set_layer(18);
-            Transform* leftHand = GorillaLocomotion::Player::get_Instance()->get_transform()->Find(il2cpp_utils::createcsstr("TurnParent/LeftHand Controller"));
-            follow->transformToFollow = leftHand;
-
-            follow->offset = Vector3(-0.025f, -0.025f , -0.1f);
-            watchObj->get_transform()->set_localScale(Vector3::get_one() *.2f);
-
-            MonkeWatch* watch = watchObj->AddComponent<MonkeWatch*>();
-            watch->Init(CreateView<MainWatchView*>(), package->get_transform()->Find(il2cpp_utils::createcsstr("BananaWatch"))->get_gameObject());
-            watch->SetActive(false);
+            MonkeWatch::SetupWatch(package->get_transform()->Find(il2cpp_utils::createcsstr("BananaWatch"))->get_gameObject());
 
         }, "_Monitor", il2cpp_utils::GetSystemType("UnityEngine", "GameObject"));
         

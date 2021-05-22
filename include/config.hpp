@@ -4,6 +4,7 @@
 struct config_t {
     UnityEngine::Color screenColor = {0.0f, 0.0f, 0.0f};
     std::string lastActiveBackground = "";
+    bool leftHanded = false;
 };
 
 extern config_t config;

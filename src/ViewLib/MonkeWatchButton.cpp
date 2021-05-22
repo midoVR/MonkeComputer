@@ -15,8 +15,8 @@
 
 DEFINE_TYPE(GorillaUI::Components::MonkeWatchButton);
 
-#define KEY_BUMP_AMOUNT 0.05f
-#define PRESS_COOLDOWN 150
+#define KEY_BUMP_AMOUNT 0.03f
+#define PRESS_COOLDOWN 1000
 
 using namespace UnityEngine;
 static const UnityEngine::Color pressedColor = {0.5f, 0.5f, 0.5f};

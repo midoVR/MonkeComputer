@@ -17,12 +17,15 @@ namespace GorillaUI::Components
 
 
 DECLARE_CLASS_CODEGEN(GorillaUI, MonkeWatch, UnityEngine::MonoBehaviour, 
+    DECLARE_METHOD(static void, SetupWatch, UnityEngine::GameObject* watchGO);
     DECLARE_METHOD(static void, Redraw);
+    DECLARE_METHOD(void, OnApplicationFocus, bool hasFocus);
     DECLARE_METHOD(static MonkeWatch*, get_instance);
     DECLARE_METHOD(void, SetupButtons);
     DECLARE_METHOD(void, SetActive, bool value);
     DECLARE_METHOD(void, PressButton, GorillaUI::Components::MonkeWatchButton* button);
     DECLARE_INSTANCE_FIELD(bool, isActive);
+
     public:
         GorillaUI::Components::ViewManager* activeViewManager = nullptr;
         void Init(GorillaUI::Components::View* initialView, UnityEngine::GameObject* watchGO);
@@ -33,10 +36,12 @@ DECLARE_CLASS_CODEGEN(GorillaUI, MonkeWatch, UnityEngine::MonoBehaviour,
         CustomScreenInfo CreateWatch();
         CustomScreenInfo CreateWatch(UnityEngine::GameObject* watchGO);
     REGISTER_FUNCTION(
+            REGISTER_METHOD(SetupWatch);
             REGISTER_METHOD(Redraw);
             REGISTER_METHOD(get_instance);
             REGISTER_METHOD(SetupButtons);
             REGISTER_METHOD(SetActive);
+            REGISTER_METHOD(OnApplicationFocus);
             REGISTER_FIELD(isActive);
     )
 )

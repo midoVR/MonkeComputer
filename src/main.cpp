@@ -26,6 +26,12 @@
 #include "GorillaUI/BaseGameViews/GroupChangeView.hpp"
 #include "GorillaUI/BaseGameViews/VoiceChatView.hpp"
 
+#include "PortableScoreboard/PlayerView.hpp"
+#include "PortableScoreboard/ReportView.hpp"
+#include "PortableScoreboard/PlayerViewManager.hpp"
+#include "PortableScoreboard/ScoreboardView.hpp"
+#include "PortableScoreboard/ScoreboardViewManager.hpp"
+
 #include "MonkeComputerConfigView.hpp"
 
 #include "ViewLib/CustomComputer.hpp"
@@ -83,20 +89,6 @@ using namespace GorillaLocomotion;
 MAKE_HOOK_OFFSETLESS(Player_Awake, void, Player* self)
 {
     Player_Awake(self);
-    return;
-
-    GameObject* watchObj = GameObject::New_ctor();
-    GlobalNamespace::TransformFollow* follow = watchObj->AddComponent<GlobalNamespace::TransformFollow*>();
-    watchObj->set_layer(18);
-    Transform* leftHand = self->get_transform()->Find(il2cpp_utils::createcsstr("TurnParent/LeftHand Controller"));
-    follow->transformToFollow = leftHand;
-
-    follow->offset = Vector3(-0.025f, -0.025f , -0.1f);
-    watchObj->get_transform()->set_localScale(Vector3::get_one() *.2f);
-
-    MonkeWatch* watch = watchObj->AddComponent<MonkeWatch*>();
-    watch->Init(CreateView<MainWatchView*>());
-    watch->SetActive(true);
 }
 
 MAKE_HOOK_OFFSETLESS(GorillaComputer_Start, void, GorillaComputer* self)
@@ -244,7 +236,8 @@ void loadlib()
 
     custom_types::Register::RegisterTypes<ColorChangeView, NameChangeView, CustomRoomView, TurnChangeView, MicChangeView, GroupChangeView, QueueChangeView, VoiceChatView>();
     custom_types::Register::RegisterTypes<BaseGameViewManager, BaseGameView>();
-
+    
+    custom_types::Register::RegisterTypes<PlayerView, PlayerViewManager, ReportView, ScoreboardView, ScoreboardViewManager>();
     custom_types::Register::RegisterType<CustomQueueView>();
     custom_types::Register::RegisterType<MonkeComputerConfigView>();
     custom_types::Register::RegisterType<BackgroundsView>();
@@ -257,6 +250,7 @@ void loadlib()
     GorillaUI::Register::RegisterSettingsView<MonkeComputerConfigView*>("Monke Computer", VERSION);
     GorillaUI::Register::RegisterSettingsView<BackgroundsView*>("Custom Backgrounds", VERSION);
     
+    GorillaUI::Register::RegisterWatchViewManager<ScoreboardViewManager*>("Scoreboard", VERSION);
     GorillaUI::Register::RegisterWatchCallback("Disconnect", VERSION, []{
         BaseGameInterface::Disconnect();
     });

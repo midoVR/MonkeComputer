@@ -10,6 +10,8 @@
 namespace GorillaUI
 {
     class CustomComputer;
+    class MonkeWatch;
+    
     namespace Components
     {
         class ViewManager; 
@@ -18,6 +20,7 @@ namespace GorillaUI
 }
 
 DECLARE_CLASS_CODEGEN(GorillaUI::Components, ViewManager, UnityEngine::MonoBehaviour, 
+    DECLARE_CTOR(ctor);
     DECLARE_METHOD(void, Activate);
     DECLARE_METHOD(void, Deactivate);
     DECLARE_METHOD(void, PresentViewManager, GorillaUI::Components::ViewManager* manager);
@@ -31,8 +34,10 @@ DECLARE_CLASS_CODEGEN(GorillaUI::Components, ViewManager, UnityEngine::MonoBehav
         GorillaUI::Components::ViewManager* parentViewManager = nullptr;
         GorillaUI::Components::ViewManager* childViewManager = nullptr;
         GorillaUI::CustomComputer* computer = nullptr;
+        GorillaUI::MonkeWatch* watch = nullptr;
         
     REGISTER_FUNCTION(
+        REGISTER_METHOD(ctor);
         REGISTER_METHOD(Activate);
         REGISTER_METHOD(Deactivate);
         REGISTER_METHOD(PresentViewManager);

@@ -10,7 +10,7 @@ extern Logger& getLogger();
 
 namespace GorillaUI::Components
 {
-    void BillboardedWatch::Update()
+    void BillboardedWatch::LateUpdate()
     {
         Vector3 currentPos = get_transform()->get_position();
         Vector3 camPos = camTransform->get_position();

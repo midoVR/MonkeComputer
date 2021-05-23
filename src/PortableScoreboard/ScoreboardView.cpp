@@ -12,11 +12,14 @@
 #include "Photon/Realtime/Room.hpp"
 #include "Photon/Pun/PhotonView.hpp"
 
+#include "GlobalNamespace/PhotonNetworkController.hpp"
 #include "GlobalNamespace/GorillaParent.hpp"
 #include "GlobalNamespace/VRRig.hpp"
 #include "GlobalNamespace/GorillaTagManager.hpp"
 #include "UnityEngine/Material.hpp"
 
+#include "Photon/Voice/PUN/PhotonVoiceView.hpp"
+#include "Photon/Voice/Unity/Recorder.hpp"
 #include <sstream>
 #include <iomanip>
 
@@ -27,6 +30,8 @@ extern Logger& getLogger();
 #define MENU_PAGE_SIZE 5
 
 using namespace UnityEngine;
+using namespace Photon::Voice::PUN;
+using namespace Photon::Voice::Unity;
 using namespace Photon::Pun;
 using namespace Photon::Realtime;
 
@@ -41,11 +46,20 @@ namespace GorillaUI
         
     }
 
-    void ScoreboardView::DidActivate(bool firstActivation)
+    void ScoreboardView::Update()
     {
-        std::function<void(int)> fun = std::bind(&ScoreboardView::ShowPlayer, this, std::placeholders::_1);
-        selectionHandler->selectionCallback = fun;
+        counter ++;
 
+        counter %= 30;
+        if (!counter) 
+        {
+            UpdatePlayers();
+            if (PhotonNetwork::get_InRoom()) Redraw();
+        }
+    }
+
+    void ScoreboardView::UpdatePlayers()
+    {
         if (!PhotonNetwork::get_InRoom())
         {
             selectionHandler->max = 0;
@@ -61,6 +75,7 @@ namespace GorillaUI
                 GlobalNamespace::VRRig* rig = rigs->values[i];
 
                 PlayerDisplayInfo info;
+                info.isTalking = (rig->GetComponent<PhotonVoiceView*>()->get_IsSpeaking() || (rig->get_photonView()->get_IsMine() && GlobalNamespace::PhotonNetworkController::_get_instance()->GetComponent<Recorder*>()->get_IsCurrentlyTransmitting()));
                 info.color = rig->materialsToChangeTo->values[0]->get_color();
                 info.isTagged = BaseGameInterface::Player::get_isInfected(rig);
                 Photon::Realtime::Player* player = rig->get_photonView() ? rig->get_photonView()->get_Owner() : nullptr;
@@ -70,12 +85,20 @@ namespace GorillaUI
                     info.playerID = to_utf8(csstrtostr(player->get_UserId()));
                     info.nickName = to_utf8(csstrtostr(player->get_NickName()));
                 }
+
                 playerInfos.push_back(info);
             }
 
             std::sort(playerInfos.begin(), playerInfos.end(), [](PlayerDisplayInfo& first, PlayerDisplayInfo& second){ return first.nickName < second.nickName; });
         }
+    }
 
+    void ScoreboardView::DidActivate(bool firstActivation)
+    {
+        std::function<void(int)> fun = std::bind(&ScoreboardView::ShowPlayer, this, std::placeholders::_1);
+        selectionHandler->selectionCallback = fun;
+
+        UpdatePlayers();
         Redraw();
     }
 
@@ -134,6 +157,8 @@ namespace GorillaUI
 
             displayName += string_format(" <color=#%s>#</color>", ColorToHex(p.color).c_str());
             
+            displayName += p.isTalking ? " <color=#444444>o</color><color=#664466>))</color>" : "    ";
+
             players.push_back(displayName);
         }
 

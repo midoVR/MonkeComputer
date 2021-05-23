@@ -140,6 +140,9 @@ namespace GorillaUI
         };
 
         SelectionHelper::DrawSelection(options, selectionHandler->currentSelectionIndex, text);
+
+        text += string_format("\n\n Color (0 - 9):\n %d %d %d\n", (int)(playerInfo.color.r * 9.0f), (int)(playerInfo.color.g * 9.0f), (int)(playerInfo.color.b * 9.0f));
+        text += string_format("\n Color (0 - 255):\n %d %d %d\n", (int)(playerInfo.color.r * 255.0f), (int)(playerInfo.color.g * 255.0f), (int)(playerInfo.color.b * 255.0f));
     }
     
     void PlayerView::OnKeyPressed(int key)

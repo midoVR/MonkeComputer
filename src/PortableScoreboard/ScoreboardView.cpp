@@ -75,7 +75,7 @@ namespace GorillaUI
                 GlobalNamespace::VRRig* rig = rigs->values[i];
 
                 PlayerDisplayInfo info;
-                info.isTalking = (rig->GetComponent<PhotonVoiceView*>()->get_IsSpeaking() || (rig->get_photonView()->get_IsMine() && GlobalNamespace::PhotonNetworkController::_get_instance()->GetComponent<Recorder*>()->get_IsCurrentlyTransmitting()));
+                info.isTalking = (rig->GetComponent<PhotonVoiceView*>()->get_IsSpeaking() || rig->GetComponent<PhotonVoiceView*>()->get_IsRecording());
                 info.color = rig->materialsToChangeTo->values[0]->get_color();
                 info.isTagged = BaseGameInterface::Player::get_isInfected(rig);
                 Photon::Realtime::Player* player = rig->get_photonView() ? rig->get_photonView()->get_Owner() : nullptr;

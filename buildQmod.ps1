@@ -8,6 +8,7 @@ if (-not ($PSVersionTable.PSEdition -eq "Core")) {
 
 & $buildScript NDK_PROJECT_PATH=$PSScriptRoot APP_BUILD_SCRIPT=$PSScriptRoot/Android.mk NDK_APPLICATION_MK=$PSScriptRoot/Application.mk -j 4
 Compress-Archive -Path  "./extern/libbeatsaber-hook_1_3_3.so",`
+                        "./extern/libbeatsaber-hook_1_3_5.so",`
                         "./libs/arm64-v8a/libcustom-types.so",`
                         "./libs/arm64-v8a/libmonkecomputer.so",`
                         "./libs/arm64-v8a/libquest-cosmetic-loader_0_1_3.so",`

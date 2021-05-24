@@ -26,6 +26,7 @@ DECLARE_CLASS_CODEGEN(GorillaUI, PlayerView, GorillaUI::Components::View,
     DECLARE_INSTANCE_FIELD(GorillaUI::Components::View*, reportView);
     public:
         GorillaUI::UISelectionHandler* selectionHandler = nullptr;
+        GorillaUI::UISelectionHandler* pttHandler = nullptr;
         PlayerDisplayInfo playerInfo;
         static std::vector<GlobalNamespace::GorillaPlayerScoreboardLine*> FindScoreboardLineForUserID(std::string userID);
 

@@ -57,6 +57,7 @@ namespace GorillaUI::BaseGameInterface
 
     void SetColor(float r, float g, float b)
     {
+        getLogger().info("Updating color");
         using namespace GlobalNamespace;
         if (!redValue) redValue = il2cpp_utils::createcsstr("redValue", il2cpp_utils::StringType::Manual);
         if (!greenValue) greenValue = il2cpp_utils::createcsstr("greenValue", il2cpp_utils::StringType::Manual);
@@ -72,6 +73,9 @@ namespace GorillaUI::BaseGameInterface
         if (PhotonNetwork::get_InRoom())
         {
             VRRig* myVRRig = gorillaTagger->myVRRig;
+            
+            myVRRig->InitializeNoobMaterial(r, g, b);
+
             PhotonView* photonView = myVRRig->get_photonView();
             static Il2CppString* initializeNoobMaterial = il2cpp_utils::createcsstr("InitializeNoobMaterial", il2cpp_utils::StringType::Manual);
 
@@ -209,6 +213,11 @@ namespace GorillaUI::BaseGameInterface
         PhotonNetworkController* photonNetworkController = PhotonNetworkController::_get_instance();
         Il2CppString* gameVersion = photonNetworkController->gameVersion;
         return to_utf8(csstrtostr(gameVersion));
+    }
+
+    void SetpttType(int index)
+    {
+        SetpttType(Mic::indexToPttType(index));
     }
 
     void SetpttType(std::string pttType)
@@ -456,6 +465,26 @@ namespace GorillaUI::BaseGameInterface
             else if (pttType == "PUSH TO TALK") return 1;
             else return 0;
         }
+
+        std::string indexToPttType(int index)
+        {
+            switch(index)
+            {
+                case 0:
+                    return "ALL CHAT";
+                    break;
+                case 1:
+                    return "PUSH TO TALK";
+                    break;
+                case 2:
+                    return "PUSH TO MUTE";
+                    break;
+                default:
+                    return "ALL CHAT";
+                    break;
+            }
+        }
+
     }
 
     namespace Queue
@@ -536,7 +565,7 @@ namespace GorillaUI::BaseGameInterface
             if (!rig) return false;
             Photon::Realtime::Player* player = rig->get_photonView()->get_Owner();
 
-            return get_isInfected(player);
+            return rig->setMatIndex > 0;
         }
 
         bool get_isInfected(Photon::Realtime::Player* player)

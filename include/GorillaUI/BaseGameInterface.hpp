@@ -20,6 +20,7 @@ namespace GorillaUI::BaseGameInterface
     bool SetName(std::string name);
     void Disconnect();
     void JoinRoom(std::string roomID);
+    void SetpttType(int index);
     void SetpttType(std::string pttType);
     void SetQueue(std::string queue);
     void SetGroup(std::string group);
@@ -73,6 +74,7 @@ namespace GorillaUI::BaseGameInterface
     {
         std::string get_pttType();
         int pttTypeToIndex(std::string pttType);
+        std::string indexToPttType(int index);
     }
 
     namespace Queue

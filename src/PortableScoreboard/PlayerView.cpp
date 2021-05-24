@@ -35,8 +35,11 @@ namespace GorillaUI
 {
     void PlayerView::Awake()
     {
-        if (!selectionHandler) selectionHandler = new UISelectionHandler(EKeyboardKey::Up, EKeyboardKey::Down, EKeyboardKey::Enter, true, true);
+        selectionHandler = new UISelectionHandler(EKeyboardKey::Up, EKeyboardKey::Down, EKeyboardKey::Enter, true, true);
+        pttHandler = new UISelectionHandler(EKeyboardKey::Left, EKeyboardKey::Right, EKeyboardKey::Enter, true, true);
         selectionHandler->max = 2;
+        pttHandler->max = 3;
+        pttHandler->currentSelectionIndex = BaseGameInterface::Mic::pttTypeToIndex(BaseGameInterface::Mic::get_pttType());
     }
 
     void PlayerView::DidActivate(bool firstActivation)
@@ -55,7 +58,11 @@ namespace GorillaUI
         std::string localUser = to_utf8(csstrtostr(localUsercs));
 
         // if clicked user is our player
-        if (localUser.find(playerInfo.playerID) != std::string::npos) return;
+        if (localUser.find(playerInfo.playerID) != std::string::npos) 
+        {
+            BaseGameInterface::SetVoiceChat(!BaseGameInterface::Voice::get_voiceChat());
+            return;
+        }
 
         GlobalNamespace::VRRig* rig = nullptr;
         std::vector<GlobalNamespace::GorillaPlayerScoreboardLine*> lines = {};
@@ -126,7 +133,12 @@ namespace GorillaUI
         // if clicked user is our player
         if (localUser.find(playerInfo.playerID) != std::string::npos)
         {
-            text += "\n This is You!,\n you can't mute or\n report yourself";
+
+            text += "\nThis is You!,\nyou can't mute or\nreport yourself";
+            text += "\n\nPress enter to toggle:\n";
+            text += string_format("Voice Chat %s", BaseGameInterface::Voice::get_voiceChat() ? "<color=#00fd00>On</color>" : "<color=#fd0000>Off</color>");
+            text += "\n\n use < / > to change:\n";
+            text += string_format("<color=adbdad><</color> %s <color=adbdad>></color>", BaseGameInterface::Mic::get_pttType().c_str());
             return;
         }
 
@@ -148,6 +160,19 @@ namespace GorillaUI
     void PlayerView::OnKeyPressed(int key)
     {
         selectionHandler->HandleKey((EKeyboardKey)key);
+
+        Il2CppString* localUsercs = PhotonNetwork::get_LocalPlayer()->get_UserId();
+        std::string localUser = to_utf8(csstrtostr(localUsercs));
+
+        if (localUser.find(playerInfo.playerID) != std::string::npos) 
+        {
+            pttHandler->currentSelectionIndex = BaseGameInterface::Mic::pttTypeToIndex(BaseGameInterface::Mic::get_pttType());
+            if (pttHandler->HandleKey((EKeyboardKey)key))
+            {
+                BaseGameInterface::SetpttType(pttHandler->currentSelectionIndex);
+            }
+        }
+
         Redraw();
     }
 

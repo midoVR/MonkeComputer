@@ -3,6 +3,12 @@
 
 namespace GorillaUI::PageHelper
 {
+
+    /// @brief Gets a page from a vector of a specific type
+    /// @param vector the full length vector to get a page from
+    /// @param pageSize the size of a page
+    /// @param pagenum the page which we want to get
+    /// @return vector of size < pageSize with elements from vector at offset pagenum * pageSize
     template<class T>
     std::vector<T> GetPage(std::vector<T>& vector, int pageSize, int pagenum)
     {
@@ -23,6 +29,10 @@ namespace GorillaUI::PageHelper
         return page;
     }
 
+    /// @brief Gets the amount of pages of pages that would fit in a vector
+    /// @param vector the vector to check for
+    /// @param pageSize the desired size
+    /// @return the amount of pages of size pageSize that would be able to be taken out of vector
     template<class T>
     int GetPageAmount(std::vector<T>& vector, int pageSize)
     {

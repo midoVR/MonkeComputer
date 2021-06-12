@@ -17,7 +17,7 @@ using namespace UnityEngine;
 extern Logger& getLogger();
 namespace GorillaUI::ReportUser
 {
-    bool ReportUser(std::string userID, int reason)
+    bool ReportUser(std::string userID, int reason, std::string otherPlayerNickname)
     {
         if (get_isReported(userID)) return false;
 
@@ -25,7 +25,7 @@ namespace GorillaUI::ReportUser
         if (lines.size() > 0)
         {
             GlobalNamespace::GorillaPlayerLineButton::ButtonType buttonType = reason;
-            lines[0]->ReportPlayer(il2cpp_utils::createcsstr(userID), buttonType);
+            lines[0]->ReportPlayer(il2cpp_utils::createcsstr(userID), buttonType, il2cpp_utils::newcsstr(otherPlayerNickname));
 
             for (auto l : lines)
             {

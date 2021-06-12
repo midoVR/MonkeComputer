@@ -260,5 +260,8 @@ void loadlib()
     });
     
     CustomQueues::add_queue("MODDED", "Modded", "  <size=40>A Queue for modded players, outside of the normal public lobbies.\n    You can't really report anyone for having a mod here, but griefing\n    is still prohibited.\n</size>");
+    CustomQueues::add_queue("DEFAULT", "Default", "  <size=40>Most players will choose this queue,\n    expect new players all the way up to pros\n</size>");
+    CustomQueues::add_queue("COMPETITIVE", "Competitive", "  <size=40>For players looking for a challenge,\n    expect pros and people looking to improve their monke skills\n</size>");
+    CustomQueues::add_queue("CASUAL", "Casual", "  <size=40>For people just looking to hang out,\n    nobody will be it or be infected\n</size>");
     INFO("Mod Loaded!");
 }

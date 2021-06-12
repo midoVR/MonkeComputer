@@ -80,7 +80,7 @@ namespace GorillaUI
                 text += " Default: Most players will choose this queue,\n expect new players all the way up to pros\n";
                 break;
             case 1:
-                text += " Competetive: For players looking for a challenge,\n expect pros and people looking to improve their monke skills\n";
+                text += " Competitive: For players looking for a challenge,\n expect pros and people looking to improve their monke skills\n";
                 break;
             case 2:
                 text += " Casual: For people just looking to hang out, nobody will be it or be infected\n";

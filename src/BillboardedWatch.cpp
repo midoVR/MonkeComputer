@@ -17,7 +17,7 @@ namespace GorillaUI::Components
 
         Vector3 dir = (camPos - currentPos).get_normalized();
 
-        dir.y = 0;
+        dir.y = 0.2f;
 
         Quaternion look = Quaternion::LookRotation(dir.get_normalized());
 

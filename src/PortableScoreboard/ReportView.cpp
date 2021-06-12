@@ -50,7 +50,7 @@ namespace GorillaUI
         auto* rig = BaseGameInterface::Player::get_VRRig(playerInfo.playerID);
         if (!rig) return;
 
-        ReportUser::ReportUser(playerInfo.playerID, index);
+        ReportUser::ReportUser(playerInfo.playerID, index, playerInfo.nickName);
     }
 
     void ReportView::Redraw()

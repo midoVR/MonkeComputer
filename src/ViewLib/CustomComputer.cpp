@@ -50,7 +50,7 @@ namespace GorillaUI
         activeViewManager->Activate();
         
         gorillaComputer = this->GetComponent<GorillaComputer*>();
-        gorillaComputer->set_enabled(false);
+        //gorillaComputer->set_enabled(false);
 
         Transform* transform = gorillaComputer->get_transform();
         Transform* keyboardTransform = transform->Find(il2cpp_utils::createcsstr("keyboard"));

@@ -55,13 +55,19 @@ namespace GorillaUI::BaseGameInterface
     static Il2CppString* groupMapJoin = nullptr;
     static Il2CppString* voiceChatOn = nullptr;
 
+    static float* red = nullptr;
+    static float* green = nullptr;
+    static float* blue = nullptr;
+
     void SetColor(float r, float g, float b)
     {
         getLogger().info("Updating color");
         using namespace GlobalNamespace;
+
         if (!redValue) redValue = il2cpp_utils::createcsstr("redValue", il2cpp_utils::StringType::Manual);
         if (!greenValue) greenValue = il2cpp_utils::createcsstr("greenValue", il2cpp_utils::StringType::Manual);
         if (!blueValue) blueValue = il2cpp_utils::createcsstr("blueValue", il2cpp_utils::StringType::Manual);
+
         PlayerPrefs::SetFloat(redValue, r);
         PlayerPrefs::SetFloat(greenValue, g);
         PlayerPrefs::SetFloat(blueValue, b);
@@ -74,17 +80,9 @@ namespace GorillaUI::BaseGameInterface
         {
             VRRig* myVRRig = gorillaTagger->myVRRig;
             
-            myVRRig->InitializeNoobMaterial(r, g, b);
-
-            PhotonView* photonView = myVRRig->get_photonView();
+            PhotonView* photonView = PhotonView::Get(myVRRig);
             static Il2CppString* initializeNoobMaterial = il2cpp_utils::createcsstr("InitializeNoobMaterial", il2cpp_utils::StringType::Manual);
-
-            std::vector<float> floatVector = {};
-            floatVector.push_back(r);
-            floatVector.push_back(g);
-            floatVector.push_back(b);
-            Array<float>* floatArr = il2cpp_utils::vectorToArray(floatVector);
-            photonView->RPC(initializeNoobMaterial, RpcTarget::All, floatArr);
+            photonView->RPC(initializeNoobMaterial, RpcTarget::All, PlayerColor::get_colorArray(r, g, b));
         }
     }
 
@@ -111,12 +109,9 @@ namespace GorillaUI::BaseGameInterface
             
             static Il2CppString* initializeNoobMaterial = il2cpp_utils::createcsstr("InitializeNoobMaterial", il2cpp_utils::StringType::Manual);
 
-            std::vector<float> floatVector = {};
-            floatVector.push_back(gorillaComputer->redValue);
-            floatVector.push_back(gorillaComputer->greenValue);
-            floatVector.push_back(gorillaComputer->blueValue);
-            Array<float>* floatArr = il2cpp_utils::vectorToArray(floatVector);
-            GlobalNamespace::GorillaTagger::_get__instance()->myVRRig->get_photonView()->RPC(initializeNoobMaterial, RpcTarget::All, floatArr);
+            GorillaTagger* gorillaTagger = GorillaTagger::get_Instance();
+            VRRig* myVRRig = gorillaTagger->myVRRig;
+            myVRRig->get_photonView()->RPC(initializeNoobMaterial, RpcTarget::All, PlayerColor::get_colorArray(gorillaComputer->redValue, gorillaComputer->greenValue, gorillaComputer->blueValue));
         }
         return true;
     }
@@ -388,6 +383,25 @@ namespace GorillaUI::BaseGameInterface
             float g = PlayerPrefs::GetFloat(greenValue, 0.0f);
             float b = PlayerPrefs::GetFloat(blueValue, 0.0f);
             return {r, g, b};
+        }
+
+        Array<Il2CppObject*>* get_colorArray(float r, float g, float b)
+        {
+            Array<Il2CppObject*>* arr = reinterpret_cast<Array<Il2CppObject*>*>(il2cpp_functions::array_new(classof(Il2CppObject*), 3));
+
+            if (!red) red = new float;
+            if (!green) green = new float;
+            if (!blue) blue = new float;
+
+            *red = r;
+            *green = g;
+            *blue = b;
+            
+            arr->values[0] = il2cpp_functions::value_box(classof(float), red);
+            arr->values[1] = il2cpp_functions::value_box(classof(float), green);
+            arr->values[2] = il2cpp_functions::value_box(classof(float), blue);
+
+            return arr;
         }
     }
 

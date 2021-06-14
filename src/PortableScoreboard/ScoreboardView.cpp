@@ -83,7 +83,7 @@ namespace GorillaUI
                 if (player)
                 {
                     info.playerID = to_utf8(csstrtostr(player->get_UserId()));
-                    info.nickName = to_utf8(csstrtostr(player->get_NickName()));
+                    info.nickName = to_utf8(csstrtostr(player->get_NickName())).substr(0, 12);
                 }
 
                 playerInfos.push_back(info);

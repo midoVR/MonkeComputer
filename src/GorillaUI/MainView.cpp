@@ -8,7 +8,7 @@ DEFINE_TYPE(GorillaUI::MainView);
 
 extern Logger& getLogger();
 
-#define MENU_PAGE_SIZE 5
+#define MENU_PAGE_SIZE 6
 
 namespace GorillaUI
 {
@@ -69,7 +69,7 @@ namespace GorillaUI
         DrawHeader();
         DrawSubMenus();
 
-        if (pageCount > 1)
+        if (pageCount >= 1)
         {
             text += "\n";
             text += string_format("  Page %d/%d", pageSelectionHandler->currentSelectionIndex, pageCount - 1);

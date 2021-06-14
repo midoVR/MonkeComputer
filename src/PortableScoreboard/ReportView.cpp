@@ -9,6 +9,7 @@
 #include "GorillaUI/BaseGameInterface.hpp"
 
 #include "Photon/Pun/PhotonNetwork.hpp"
+#include "Photon/Pun/PhotonView.hpp"
 #include "Photon/Realtime/Player.hpp"
 
 #include "GlobalNamespace/GorillaParent.hpp"
@@ -49,8 +50,10 @@ namespace GorillaUI
         
         auto* rig = BaseGameInterface::Player::get_VRRig(playerInfo.playerID);
         if (!rig) return;
+        
+        ;
 
-        ReportUser::ReportUser(playerInfo.playerID, index, playerInfo.nickName);
+        ReportUser::ReportUser(playerInfo.playerID, index, to_utf8(csstrtostr(rig->get_photonView()->get_Owner()->get_NickName())));
     }
 
     void ReportView::Redraw()

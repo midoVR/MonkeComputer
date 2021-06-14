@@ -46,6 +46,7 @@ namespace GorillaUI::BaseGameInterface
     namespace PlayerColor
     {
         UnityEngine::Color get_color();
+        Array<Il2CppObject*>* get_colorArray(float r, float g, float b);
     }
 
     namespace Name

@@ -322,6 +322,14 @@ void RegisterCommands()
         return "  Disconnected!\n";
     }, "  Disconnect from your current room\n\n  DC\n  DISCONNECT");
 
+    // disconnects and rejoins the same lobby, hopefully
+    GorillaUI::CommandRegister::RegisterCommand("rejoin", [](std::vector<std::string>) -> std::string { 
+        std::string roomID = BaseGameInterface::Room::get_roomID();
+        BaseGameInterface::Disconnect();
+        BaseGameInterface::JoinRoom(roomID);
+        return "  Reconnected!";
+    }, "  Disconnect and rejoin room\n  May or may not work properly\n\n  REJOIN");
+
     // read or set current color
     GorillaUI::CommandRegister::RegisterCommand("color", [](std::vector<std::string> args) -> std::string {
         int r, g, b;
@@ -364,6 +372,7 @@ void RegisterCommands()
         else
         {
             std::string newName = args[0];
+            newName = newName.substr(0, 30);
             if (newName == BaseGameInterface::Name::get_name()) return "  Name was already this!";
 
             bool nameFailed = !BaseGameInterface::SetName(newName);
@@ -730,17 +739,23 @@ void RegisterCommands()
         {
             std::string result = "";
             result += "  Available commands in the command line:\n";
-            result += "  dc        color      name\n";
-            result += "  room      queue      vc\n";
-            result += "  mic       turn       quit\n";
-            result += "  echo      write      read\n";
-            result += "  rm        run        screencolor\n";
-            result += "  history   help\n";
+            result += "  dc          color    name\n";
+            result += "  room        queue    vc\n";
+            result += "  mic         turn     quit\n";
+            result += "  echo        write    read\n";
+            result += "  rm          run      screencolor\n";
+            result += "  history     help     donate\n";
+            result += "  rejoin\n";
             result += "\n  Use HELP [command] for more info";
             return result;
         }
         else return GorillaUI::CommandRegister::get_help(args[0]);
     }, "  Run without any arguments to get a list of possible commands\n  This won't be every command available,\n  but definitely some of the options.\n\n  Run with an argument to find help for a specific command\n  HELP\n  HELP [command]");
+
+    // plug donation
+    GorillaUI::CommandRegister::RegisterCommand(std::vector<std::string>{"donate", "paypal"}, [](std::vector<std::string> args) -> std::string {
+        return "\n  Do you like what I do with these mods?\n  consider donating on paypal!\n  This money would help me justify working on mods, and overall just help me out :)\n\n  Paypal:\n  <color=#fdfdfd>https://paypal.me/RedBrumblerOfficial</color>";
+    }, "  Information about donating, as making mods takes time\n\n  DONATE\n  PAYPAL");
 
     // pink cute
     GorillaUI::CommandRegister::RegisterCommand("pink", [](std::vector<std::string> args) -> std::string {

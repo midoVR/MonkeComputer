@@ -3,6 +3,7 @@
 #include "ViewLib/CustomComputer.hpp"
 #include "GorillaUI/BaseGameInterface.hpp"
 #include "BanManager.hpp"
+#include "OutdatedManager.hpp"
 #include "UnityEngine/Color.hpp"
 #include "ViewLib/CustomScreenInfo.hpp"
 
@@ -40,7 +41,12 @@ namespace GorillaUI
         {
             text += BanManager::get_displayMessage();
         }
-        // if user is not banned
+        // if user is outdated
+        else if (OutdatedManager::get_isOutdated())
+        {
+            text += OutdatedManager::get_displayMessage();
+        }
+        // if user is not banned or outdated
         else
         {
             text += "<size=40>  Refresh by reopening this menu\n</size>\n";

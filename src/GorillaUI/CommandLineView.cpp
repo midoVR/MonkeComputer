@@ -101,7 +101,6 @@ namespace GorillaUI
                 break;
         }
 
-        getLogger().info("history index: %d", historyHandler->currentSelectionIndex);
         Redraw();
     }
 
@@ -125,14 +124,12 @@ namespace GorillaUI
         // if empty, just dont add to history because that is a waste of space and history
         if (command == "") return;
         
-        getLogger().info("Added Command %s to the list", command.c_str());
         // add to list
         commandHistory.push_back(command);
 
         // remove first from list if the size is getting too big
         while (commandHistory.size() > config.commandHistoryLength)
         {
-            getLogger().info("Command history list was larger than max size, making it shorter...");
             commandHistory.erase(commandHistory.begin(), commandHistory.begin() + 1);
         }
     }

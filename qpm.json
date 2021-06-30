@@ -4,12 +4,12 @@
   "info": {
     "name": "MonkeComputer",
     "id": "monkecomputer",
-    "version": "1.5.1",
+    "version": "1.5.2",
     "url": "https://github.com/RedBrumbler/MonkeComputer",
     "additionalData": {
       "overrideSoName": "libmonkecomputer.so",
-      "branchName": "version-v1.5.1",
-      "soLink": "https://github.com/RedBrumbler/MonkeComputer/releases/download/1.5.1/libmonkecomputer.so"
+      "branchName": "version-v1.5.2",
+      "soLink": "https://github.com/RedBrumbler/MonkeComputer/releases/download/1.5.2/libmonkecomputer.so"
     }
   },
   "dependencies": [
@@ -34,6 +34,11 @@
     },
     {
       "id": "monkecodegen",
+      "versionRange": "*",
+      "additionalData": {}
+    },
+    {
+      "id": "gorilla-utils",
       "versionRange": "*",
       "additionalData": {}
     }

@@ -73,10 +73,20 @@
 #include "CustomBackgrounds/BackgroundsView.hpp"
 
 #include "BanManager.hpp"
+#include "OutdatedManager.hpp"
 
 #include <stdlib.h>
 
 #include "Photon/Pun/PhotonNetwork.hpp"
+
+#include "gorilla-utils/shared/Callbacks/MatchMakingCallbacks.hpp"
+#include "gorilla-utils/shared/Callbacks/InRoomCallbacks.hpp"
+#include "gorilla-utils/shared/CustomProperties/Room.hpp"
+#include "gorilla-utils/shared/CustomProperties/Player.hpp"
+#include "gorilla-utils/shared/Utils/Player.hpp"
+#include "gorilla-utils/shared/GorillaUtils.hpp"
+
+#include "Utils/TextUtils.hpp"
 
 using namespace GorillaUI;
 using namespace GorillaUI::Components;
@@ -95,16 +105,11 @@ Logger& getLogger()
 using namespace UnityEngine;
 using namespace GlobalNamespace;
 using namespace GorillaLocomotion;
-
-MAKE_HOOK_OFFSETLESS(Player_Awake, void, Player* self)
-{
-    Player_Awake(self);
-}
+using Hashtable_Base = System::Collections::Generic::Dictionary_2<Il2CppObject*, Il2CppObject*>;
 
 MAKE_HOOK_OFFSETLESS(GorillaComputer_Start, void, GorillaComputer* self)
 {
     GorillaComputer_Start(self);
-    
     GameObject* computerGO = self->get_gameObject();
     CustomComputer* computer = computerGO->AddComponent<CustomComputer*>();
     computer->Init(CreateView<MainView*>());
@@ -220,6 +225,33 @@ MAKE_HOOK_OFFSETLESS(PlayFabAuthenticator_OnPlayFabError, void, GlobalNamespace:
     PlayFabAuthenticator_OnPlayFabError(self, obj);
 }
 
+MAKE_HOOK_OFFSETLESS(GorillaComputer_GeneralFailureMessage, void, GlobalNamespace::GorillaComputer* self, Il2CppString* failMessage)
+{
+    GorillaComputer_GeneralFailureMessage(self, failMessage);
+    if (failMessage && failMessage->Equals(self->versionMismatch)) // if the fail message is the version mismatch text
+    {
+        std::string fail = to_utf8(csstrtostr(failMessage));
+        OutdatedManager::set_displayMessage("Sadly, your game is outdated\nIf you wish to update your game then delete it\nusing the tools in questpatcher, and reinstall.\nAfter reinstalling you can then patch again\nAfter updates mods can break,\nplease be patient while they are being updated!");
+
+        std::vector<ModEntry>& entries = Register::get_entries();
+
+        for (auto& entry : entries)
+        {
+            if (entry.get_info().id == "Details")
+            {
+                CustomComputer* pc = CustomComputer::get_instance();
+                if (pc)
+                    pc->activeViewManager->ReplaceTopView(entry.get_view());
+                break;
+            }
+        }
+    }
+}
+
+MAKE_HOOK_OFFSETLESS(VRRig_NormalizeName, Il2CppString*, GlobalNamespace::VRRig* self, bool doIt, Il2CppString* text)
+{
+    return VRRig_NormalizeName(self, false, text);
+}
 
 extern "C" void setup(ModInfo& info)
 {
@@ -236,11 +268,15 @@ void loadlib()
     if (!LoadConfig())
             SaveConfig();
     BackgroundsList::Load();
+
+    GorillaUtils::Init();
+
     INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_Start, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "Start", 0));
     INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_CheckAutoBanList, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "CheckAutoBanList", 1));
     INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_BanMe, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "BanMe", 2));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), Player_Awake, il2cpp_utils::FindMethodUnsafe("GorillaLocomotion", "Player", "Awake", 0));
     INSTALL_HOOK_OFFSETLESS(getLogger(), PlayFabAuthenticator_OnPlayFabError, il2cpp_utils::FindMethodUnsafe("", "PlayFabAuthenticator", "OnPlayFabError", 1));
+    INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_GeneralFailureMessage, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "GeneralFailureMessage", 1));
+    INSTALL_HOOK_OFFSETLESS(getLogger(), VRRig_NormalizeName, il2cpp_utils::FindMethodUnsafe("", "VRRig", "NormalizeName", 2));
     
     using namespace GorillaUI::Components;
     custom_types::Register::RegisterTypes<CustomComputer, MonkeWatch, View, ViewManager, GorillaUI::Components::GorillaKeyboardButton, MonkeWatchButton, WatchActivatorTrigger, BillboardedWatch>();
@@ -272,7 +308,7 @@ void loadlib()
     GorillaUI::Register::RegisterWatchCallback("Disconnect", VERSION, []{
         BaseGameInterface::Disconnect();
     });
-    
+
     RegisterCommands();
     AddQueues();
 
@@ -313,9 +349,40 @@ void mkdir(std::string directory)
         }
     }
 }
+struct FakeColor {
+    float r; float g; float b;
+};
+
+std::map <std::string, FakeColor> textToColor = {
+    {"dark red", {0.5f, 0.0f, 0.0f}},
+    {"red", {1.0f, 0.0f, 0.0f}},
+    {"pink", {1.0f, 0.5f, 0.5f}},
+    {"green", {0.0f, 1.0f, 0.0f}},
+    {"dark green", {0.0f, 0.5f, 0.0f}},
+    {"light green", {0.5f, 1.0f, 0.5f}},
+    {"blue", {0.0f, 0.0f, 1.0f}},
+    {"dark blue", {0.0f, 0.0f, 0.5f}},
+    {"light blue", {0.5f, 0.5f, 1.0f}},
+    {"cyan", {0.0f, 1.0f, 1.0f}},
+    {"teal", {0.0f, 0.5f, 0.5f}},
+    {"turqoise", {0.25f, 1.0f, 0.75f}},
+    {"magenta", {1.0f, 0.0f, 1.0f}},
+    {"purple", {0.5f, 0.0f, 1.0f}},
+    {"yellow", {1.0f, 1.0f, 0.0f}},
+    {"orange", {1.0f, 0.5f, 0.0f}},
+    {"brown", {0.5f, 0.25f, 0.0f}},
+    {"white", {1.0f, 1.0f, 1.0f}},
+    {"black", {0.0f, 0.0f, 0.0f}},
+    {"gray", {0.5f, 0.5f, 0.5f}},
+    {"grey", {0.5f, 0.5f, 0.5f}},
+    {"dark grey", {0.25f, 0.25f, 0.25f}},
+    {"dark gray", {0.25f, 0.25f, 0.25f}},
+    {"light grey", {0.75f, 0.75f, 0.75f}},
+    {"light gray", {0.75f, 0.75f, 0.75f}}
+};
 
 void RegisterCommands()
-{
+{   
     // disconnect from current lobby
     GorillaUI::CommandRegister::RegisterCommand(std::vector<std::string>{"dc", "disconnect"}, [](std::vector<std::string>) -> std::string { 
         BaseGameInterface::Disconnect();
@@ -331,7 +398,7 @@ void RegisterCommands()
     }, "  Disconnect and rejoin room\n  May or may not work properly\n\n  REJOIN");
 
     // read or set current color
-    GorillaUI::CommandRegister::RegisterCommand("color", [](std::vector<std::string> args) -> std::string {
+    GorillaUI::CommandRegister::RegisterCommand(std::vector<std::string>{"color", "colour"}, [](std::vector<std::string> args) -> std::string {
         int r, g, b;
                 
         UnityEngine::Color color = BaseGameInterface::PlayerColor::get_color();
@@ -346,8 +413,41 @@ void RegisterCommands()
                     BaseGameInterface::SetColor((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f);
                     return string_format("  Color Set to %d, %d, %d\n", r, g, b);
                 }
-                else return "  Invalid Argument!";
+                else 
+                {
+                    std::map <std::string, FakeColor>::iterator it = textToColor.find(TextUtils::toLower(args[0]));
 
+                    if (it != textToColor.end())
+                    {
+                        BaseGameInterface::SetColor(it->second.r, it->second.g, it->second.b);
+                        return string_format("  Color Set to %d, %d, %d\n", (int)(it->second.r * 255.0f), (int)(it->second.g * 255.0f), (int)(it->second.b * 255.0f));
+                    }
+                    else return "  Invalid Argument!";
+                }
+                break;
+            case 2:
+                if (TextUtils::toLower(args[0]) == "neon")
+                {
+                    std::map <std::string, FakeColor>::iterator it = textToColor.find(TextUtils::toLower(args[1]));
+                    if (it != textToColor.end())
+                    {
+                        BaseGameInterface::SetColor(it->second.r * 2.0f, it->second.g * 2.0f, it->second.b * 2.0f);
+                        return string_format("  Color Set to %d, %d, %d\n", (int)(it->second.r * 2.0f * 255.0f), (int)(it->second.g * 2.0f * 255.0f), (int)(it->second.b * 2.0f * 255.0f));
+                    }
+                    else return "  Invalid Argument!";
+                }
+                else // if not neon modifier
+                {
+                    std::string text = string_format("%s %s", args[0].c_str(), args[1].c_str());
+                    std::map <std::string, FakeColor>::iterator it = textToColor.find(TextUtils::toLower(text));
+
+                    if (it != textToColor.end())
+                    {
+                        BaseGameInterface::SetColor(it->second.r, it->second.g, it->second.b);
+                        return string_format("  Color Set to %d, %d, %d\n", (int)(it->second.r * 255.0f), (int)(it->second.g * 255.0f), (int)(it->second.b * 255.0f));
+                    }
+                    else return "  Invalid Argument!";
+                }
                 break;
             case 3:
                 if (!str2int(r, args[0].c_str()) && !str2int(g, args[1].c_str()) && !str2int(b, args[2].c_str()))
@@ -355,7 +455,20 @@ void RegisterCommands()
                     BaseGameInterface::SetColor((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f);
                     return string_format("  Color Set to %d, %d, %d\n", r, g, b);
                 }
+                else if (TextUtils::toLower(args[0]) == "neon")
+                {
+                    std::string text = string_format("%s %s", args[1].c_str(), args[2].c_str());
+                    std::map <std::string, FakeColor>::iterator it = textToColor.find(TextUtils::toLower(text));
+
+                    if (it != textToColor.end())
+                    {
+                        BaseGameInterface::SetColor(it->second.r * 2.0f, it->second.g * 2.0f, it->second.b * 2.0f);
+                        return string_format("  Color Set to %d, %d, %d\n", (int)(it->second.r * 2.0f * 255.0f), (int)(it->second.g * 2.0f * 255.0f), (int)(it->second.b * 2.0f * 255.0f));
+                    }
+                    else return "  Invalid Argument!";
+                } 
                 else return "  Invalid Argument(s)!";
+                
                 break;
             default:
                 break;

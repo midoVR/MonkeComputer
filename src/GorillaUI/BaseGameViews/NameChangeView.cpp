@@ -66,7 +66,7 @@ namespace GorillaUI
     void NameChangeView::OnKeyPressed(int key)
     {
         textInputHandler->HandleKey((EKeyboardKey)key);
-        if (textInputHandler->text.size() > 10) textInputHandler->text = textInputHandler->text.substr(0, 10);
+        if (textInputHandler->text.size() > 12) textInputHandler->text = textInputHandler->text.substr(0, 10);
         Redraw();
     }
 }

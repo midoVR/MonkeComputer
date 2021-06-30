@@ -3,6 +3,7 @@
 #include "Register.hpp"
 #include "ViewLib/CustomComputer.hpp"
 #include "GorillaUI/BaseGameInterface.hpp"
+#include "gorilla-utils/shared/Callbacks/MatchMakingCallbacks.hpp"
 
 #include "UnityEngine/Time.hpp"
 
@@ -16,7 +17,14 @@ namespace GorillaUI
     {
         if (!textInputHandler) textInputHandler = new UITextInputHandler(EKeyboardKey::Enter, true);
         if (!optionInputHandler) optionInputHandler = new UIOptionInputHandler(EKeyboardKey::Enter, false);
+
         lastUpdatedTime = UnityEngine::Time::get_time();
+    }
+
+    void CustomRoomView::DidDeactivate()
+    {
+        GorillaUtils::MatchMakingCallbacks::remove_OnJoinRoomFailed(onJoinRoomFailedIdentifier);
+        GorillaUtils::MatchMakingCallbacks::remove_OnJoinedRoom(onJoinRoomFailedIdentifier);
     }
 
     void CustomRoomView::DidActivate(bool firstActivation)
@@ -26,6 +34,14 @@ namespace GorillaUI
         textInputHandler->text = BaseGameInterface::Room::get_roomID();
         Redraw();
         lastUpdatedTime = UnityEngine::Time::get_time();
+
+        onJoinRoomFailedIdentifier = GorillaUtils::MatchMakingCallbacks::add_OnJoinRoomFailed([&](short error, std::string message){
+            Redraw();
+        });
+
+        onJoinedRoomIdentifier = GorillaUtils::MatchMakingCallbacks::add_OnJoinedRoom([&](){
+            Redraw();
+        });
     }
 
     void CustomRoomView::Update()
@@ -70,6 +86,12 @@ namespace GorillaUI
         text += "  <size=40>Press enter to join or create a room with the entered code</size>\n";
         text += string_format("  Your Entered room code:\n  <color=#fdfdfd>%s</color>\n\n", textInputHandler->text.c_str());
         text += "\n  <size=40>Press Option 1 to Disconnect from the current room</size>\n";
+
+        if (BaseGameInterface::Room::get_roomFull())
+        {
+            text += "  Join Room Failed, room was full\n";
+        }
+
         char playerCount = BaseGameInterface::Room::get_playerCount();
         text += playerCount > 0 ? string_format("  Current Room: <color=#fdfdfd>%s</color>\n", BaseGameInterface::Room::get_roomID().c_str()) : "";
         text += playerCount > 0 ? string_format("  Players in room: <color=#fdfdfd>%d</color>", playerCount) : "  Not in a room";

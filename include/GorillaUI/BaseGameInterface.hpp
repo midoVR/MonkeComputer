@@ -69,6 +69,8 @@ namespace GorillaUI::BaseGameInterface
 
         /// @brief count of players banned yesterday
         int get_bannedPlayers();
+
+        bool get_roomFull();
     }
 
     namespace Mic

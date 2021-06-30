@@ -34,6 +34,7 @@
 
 
 #include "UnityEngine/XR/Interaction/Toolkit/GorillaSnapTurn.hpp"
+#include "gorilla-utils/shared/Utils/RPC.hpp"
 
 extern Logger& getLogger();
 
@@ -41,6 +42,8 @@ using namespace UnityEngine;
 using namespace GlobalNamespace;
 using namespace Photon::Pun;
 using namespace Photon::Realtime;
+
+#define RPC(val...) GorillaUtils::RPC::RPC(val);
 
 namespace GorillaUI::BaseGameInterface
 {
@@ -79,10 +82,7 @@ namespace GorillaUI::BaseGameInterface
         if (PhotonNetwork::get_InRoom())
         {
             VRRig* myVRRig = gorillaTagger->myVRRig;
-            
-            PhotonView* photonView = PhotonView::Get(myVRRig);
-            static Il2CppString* initializeNoobMaterial = il2cpp_utils::createcsstr("InitializeNoobMaterial", il2cpp_utils::StringType::Manual);
-            photonView->RPC(initializeNoobMaterial, RpcTarget::All, PlayerColor::get_colorArray(r, g, b));
+            RPC(PhotonView::Get(myVRRig), "InitializeNoobMaterial", RpcTarget::All, r, g, b);
         }
     }
 
@@ -106,12 +106,9 @@ namespace GorillaUI::BaseGameInterface
 
         if (PhotonNetwork::get_InRoom())
         {
-            
-            static Il2CppString* initializeNoobMaterial = il2cpp_utils::createcsstr("InitializeNoobMaterial", il2cpp_utils::StringType::Manual);
-
             GorillaTagger* gorillaTagger = GorillaTagger::get_Instance();
             VRRig* myVRRig = gorillaTagger->myVRRig;
-            myVRRig->get_photonView()->RPC(initializeNoobMaterial, RpcTarget::All, PlayerColor::get_colorArray(gorillaComputer->redValue, gorillaComputer->greenValue, gorillaComputer->blueValue));
+            RPC(PhotonView::Get(myVRRig), "InitializeNoobMaterial", RpcTarget::All, gorillaComputer->redValue, gorillaComputer->greenValue, gorillaComputer->blueValue);
         }
         return true;
     }
@@ -292,9 +289,7 @@ namespace GorillaUI::BaseGameInterface
                 // if player is close, that means join them
                 if (it != playerIDsCurrentlyTouchingVector.end() && !roomPlayer->Equals(localPlayer))
                 {
-                    // method name
-                    static Il2CppString* joinPubWithFriends = il2cpp_utils::createcsstr("JoinPubWithFreinds", il2cpp_utils::StringType::Manual);
-                    photonView->RPC(joinPubWithFriends, roomPlayer, System::Array::Empty<Il2CppObject*>());
+                    RPC(photonView, "JoinPubWithFreinds", roomPlayer);
                 }
             }
 
@@ -461,6 +456,12 @@ namespace GorillaUI::BaseGameInterface
             GorillaComputer* gorillaComputer = GorillaComputer::_get_instance();
             if (!gorillaComputer) return -1;
             return gorillaComputer->usersBanned;
+        }
+
+        bool get_roomFull()
+        {
+            GorillaComputer* gorillaComputer = GorillaComputer::_get_instance();
+            return (gorillaComputer ? gorillaComputer->roomFull : false) && !PhotonNetwork::get_InRoom();
         }
     }
 

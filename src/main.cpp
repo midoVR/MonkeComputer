@@ -298,10 +298,6 @@ void loadlib()
         BaseGameInterface::Disconnect();
     });
 
-    GorillaUI::Register::RegisterWatchCallback("Master Client", VERSION, []{
-        Photon::Pun::PhotonNetwork::SetMasterClient(Photon::Pun::PhotonNetwork::get_LocalPlayer());
-    });
-
     RegisterCommands();
     AddQueues();
 

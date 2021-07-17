@@ -347,9 +347,8 @@ namespace GorillaUI::BaseGameInterface
         std::string get_turnType()
         {
             if (!stickTurning) stickTurning = il2cpp_utils::createcsstr("stickTurning", il2cpp_utils::StringType::Manual);
-            static Il2CppString* defaultValue = il2cpp_utils::createcsstr("NONE");
-            Il2CppString* turnTypeCS = PlayerPrefs::GetString(stickTurning, defaultValue);
-            return to_utf8(csstrtostr(turnTypeCS));
+            Il2CppString* turnTypeCS = PlayerPrefs::GetString(stickTurning);
+            return turnTypeCS ? to_utf8(csstrtostr(turnTypeCS)) : "NONE";
         }
 
         void set_turnType(std::string turnType)
@@ -405,8 +404,8 @@ namespace GorillaUI::BaseGameInterface
         std::string get_name()
         {
             if (!playerName) playerName = il2cpp_utils::createcsstr("playerName", il2cpp_utils::StringType::Manual);
-            Il2CppString* csMonke = PlayerPrefs::GetString(playerName, il2cpp_utils::createcsstr(string_format("gorilla%d", rand() % 10000)));
-            std::string monke = to_utf8(csstrtostr(csMonke));
+            Il2CppString* csMonke = PlayerPrefs::GetString(playerName);
+            std::string monke = csMonke ? to_utf8(csstrtostr(csMonke)) : string_format("gorilla%d", rand() % 10000);
             return monke;
         }
     }
@@ -470,8 +469,8 @@ namespace GorillaUI::BaseGameInterface
         std::string get_pttType()
         {
             if (!BaseGameInterface::pttType) BaseGameInterface::pttType = il2cpp_utils::createcsstr("pttType", il2cpp_utils::StringType::Manual);
-            Il2CppString* pttType = PlayerPrefs::GetString(BaseGameInterface::pttType, il2cpp_utils::createcsstr("ALL CHAT"));
-            return to_utf8(csstrtostr(pttType));
+            Il2CppString* pttType = PlayerPrefs::GetString(BaseGameInterface::pttType);
+            return pttType ? to_utf8(csstrtostr(pttType)) : "ALL CHAT";
         }
 
         int pttTypeToIndex(std::string pttType)
@@ -507,8 +506,8 @@ namespace GorillaUI::BaseGameInterface
         std::string get_Queue()
         {
             if (!currentQueue) currentQueue = il2cpp_utils::createcsstr("currentQueue", il2cpp_utils::StringType::Manual);
-            Il2CppString* currentQueueCS = PlayerPrefs::GetString(currentQueue, il2cpp_utils::createcsstr("DEFAULT"));
-            return to_utf8(csstrtostr(currentQueueCS));
+            Il2CppString* currentQueueCS = PlayerPrefs::GetString(currentQueue);
+            return currentQueueCS ? to_utf8(csstrtostr(currentQueueCS)) : "DEFAULT";
         }
 
         int queueToIndex(std::string queue)
@@ -524,8 +523,8 @@ namespace GorillaUI::BaseGameInterface
         std::string get_group()
         {
             if (!groupMapJoin) groupMapJoin = il2cpp_utils::createcsstr("groupMapJoin", il2cpp_utils::StringType::Manual);
-            Il2CppString* currentGroup = PlayerPrefs::GetString(groupMapJoin, il2cpp_utils::createcsstr("FOREST"));
-            return to_utf8(csstrtostr(currentGroup));
+            Il2CppString* currentGroup = PlayerPrefs::GetString(groupMapJoin);
+            return currentGroup ? to_utf8(csstrtostr(currentGroup)) : "FOREST";
         }
 
         int groupToIndex(std::string group)

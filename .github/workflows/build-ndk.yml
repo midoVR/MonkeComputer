@@ -4,8 +4,8 @@ name: NDK build
 # set env variables
 env:
     ndkname: android-ndk-r22
-    module_id: quest-cosmetic-loader
-    qmodName: GorillaUtils
+    module_id: monkecomputer
+    qmodName: MonkeComputer
 
 # run this workflow when
 on:

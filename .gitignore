@@ -7,3 +7,8 @@ qpm.shared.json
 *.backup
 *.zip
 *.qmod
+
+MonkeComputerActivator/extern/
+MonkeComputerActivator/libs/
+MonkeComputerActivator/obj/
+MonkeComputerActivator/qpm.shared.json

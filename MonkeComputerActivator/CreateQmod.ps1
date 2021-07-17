@@ -1,10 +1,10 @@
 if (-not $env:qmodName) 
 {
-    $env:qmodName = "MonkeComputer"
+    $env:qmodName = "MonkeComputerActivator"
 }  
 if (-not $env:module_id)
 {
-    $env:module_id = "monkecomputer"
+    $env:module_id = "monkecomputer-activator"
 }
 
 $zip = $env:qmodName + ".zip"

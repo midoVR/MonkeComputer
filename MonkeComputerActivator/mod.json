@@ -1,0 +1,27 @@
+{
+    "_QPVersion": "0.1.1",
+    "name": "Monke Computer Activator",
+    "id": "MonkeComputerActivator",
+    "author": "RedBrumbler",
+    "version": "1.0.7",
+    "packageId": "com.AnotherAxiom.GorillaTag",
+    "packageVersion": "1.0.10",
+    "type": "Gameplay",
+	"coverImage": "cover.png",
+	"description": "A mod that activates the Custom Computer\nOnly useful if no other mods that use it are installed",
+    "dependencies": [
+		{
+            "id": "MonkeComputer",
+            "version": ">=1.5.2",
+            "downloadIfMissing": "https://github.com/RedBrumbler/MonkeComputer/releases/latest/download/MonkeComputer.qmod"
+        }
+    ],
+	"modFiles": [
+		"libmonkecomputer-activator.so"
+    ],
+    "libraryFiles": [
+        "libbeatsaber-hook_1_3_5.so"
+    ],
+    "fileCopies": [
+    ]
+}

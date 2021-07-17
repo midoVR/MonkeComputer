@@ -13,7 +13,7 @@
 #include "GlobalNamespace/GorillaTriggerColliderHandIndicator.hpp"
 #include "GlobalNamespace/GorillaTagger.hpp"
 
-DEFINE_TYPE(GorillaUI::Components::MonkeWatchButton);
+DEFINE_TYPE(GorillaUI::Components, MonkeWatchButton);
 
 #define KEY_BUMP_AMOUNT 0.03f
 #define PRESS_COOLDOWN 500

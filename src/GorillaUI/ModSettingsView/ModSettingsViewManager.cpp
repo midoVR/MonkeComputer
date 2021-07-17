@@ -2,7 +2,7 @@
 #include "GorillaUI/ModSettingsView/ModSettingsView.hpp"
 #include "GorillaUI.hpp"
 
-DEFINE_TYPE(GorillaUI::ModSettingsViewManager);
+DEFINE_TYPE(GorillaUI, ModSettingsViewManager);
 
 namespace GorillaUI
 {

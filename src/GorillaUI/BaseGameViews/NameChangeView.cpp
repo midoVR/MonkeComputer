@@ -6,7 +6,7 @@
 
 #include "UnityEngine/Application.hpp"
 
-DEFINE_TYPE(GorillaUI::NameChangeView);
+DEFINE_TYPE(GorillaUI, NameChangeView);
 
 extern Logger& getLogger();
 

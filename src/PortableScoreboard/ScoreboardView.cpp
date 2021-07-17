@@ -23,7 +23,7 @@
 #include <sstream>
 #include <iomanip>
 
-DEFINE_TYPE(GorillaUI::ScoreboardView);
+DEFINE_TYPE(GorillaUI, ScoreboardView);
 
 extern Logger& getLogger();
 

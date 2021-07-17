@@ -4,7 +4,7 @@
 #include "beatsaber-hook/shared/utils/utils.h"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
-DEFINE_TYPE(GorillaUI::ScoreboardViewManager);
+DEFINE_TYPE(GorillaUI, ScoreboardViewManager);
 
 using namespace GorillaUI::Components;
 

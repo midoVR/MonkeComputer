@@ -23,7 +23,7 @@
 
 #include "Utils/LoadUtils.hpp"
 #include "GorillaUI.hpp"
-DEFINE_TYPE(GorillaUI::CustomComputer);
+DEFINE_TYPE(GorillaUI, CustomComputer);
 
 using namespace GorillaUI::Components;
 using namespace TextUtils;

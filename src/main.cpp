@@ -5,6 +5,7 @@
 #include "beatsaber-hook/shared/utils/utils.h"
 #include "beatsaber-hook/shared/utils/il2cpp-type-check.hpp"
 #include "beatsaber-hook/shared/config/config-utils.hpp"
+#include "beatsaber-hook/shared/utils/hooking.hpp"
 
 #include "custom-types/shared/register.hpp"
 #include "GorillaUI.hpp"
@@ -49,7 +50,6 @@
 #include "GorillaUI/CustomQueueView.hpp"
 #include "GorillaUI/BaseGameInterface.hpp"
 
-#include "typedefs.h"
 #include <vector>
 #include <stdio.h>
 #include <string.h>
@@ -107,7 +107,7 @@ using namespace GlobalNamespace;
 using namespace GorillaLocomotion;
 using Hashtable_Base = System::Collections::Generic::Dictionary_2<Il2CppObject*, Il2CppObject*>;
 
-MAKE_HOOK_OFFSETLESS(GorillaComputer_Start, void, GorillaComputer* self)
+MAKE_HOOK_MATCH(GorillaComputer_Start, &GorillaComputer::Start, void, GorillaComputer* self)
 {
     GorillaComputer_Start(self);
     GameObject* computerGO = self->get_gameObject();
@@ -115,7 +115,7 @@ MAKE_HOOK_OFFSETLESS(GorillaComputer_Start, void, GorillaComputer* self)
     computer->Init(CreateView<MainView*>());
 }
 
-MAKE_HOOK_OFFSETLESS(GorillaComputer_CheckAutoBanList, bool, GorillaComputer* self, Il2CppString* nameToCheck)
+MAKE_HOOK_MATCH(GorillaComputer_CheckAutoBanList, &GorillaComputer::CheckAutoBanList, bool, GorillaComputer* self, Il2CppString* nameToCheck)
 {   
     INFO("Anywhere Two Week Ban List: ");
     for (int i = 0; i < self->anywhereTwoWeek->Length(); i++)
@@ -141,13 +141,13 @@ MAKE_HOOK_OFFSETLESS(GorillaComputer_CheckAutoBanList, bool, GorillaComputer* se
     return GorillaComputer_CheckAutoBanList(self, nameToCheck);
 }
 
-MAKE_HOOK_OFFSETLESS(GorillaComputer_BanMe, void, GorillaComputer* self, int hours, Il2CppString* nameToCheck)
+MAKE_HOOK_MATCH(GorillaComputer_BanMe, &GorillaComputer::BanMe, void, GorillaComputer* self, int hours, Il2CppString* nameToCheck)
 {
     std::string name = to_utf8(csstrtostr(nameToCheck));
     INFO("Player Tried setting name %s, but a ban of %d hours was prevented", name.c_str(), hours);
 }
 
-MAKE_HOOK_OFFSETLESS(PlayFabAuthenticator_OnPlayFabError, void, GlobalNamespace::PlayFabAuthenticator* self, PlayFab::PlayFabError* obj)
+MAKE_HOOK_MATCH(PlayFabAuthenticator_OnPlayFabError, &GlobalNamespace::PlayFabAuthenticator::OnPlayFabError, void, GlobalNamespace::PlayFabAuthenticator* self, PlayFab::PlayFabError* obj)
 {
     if (!obj || !obj->ErrorMessage) 
     {
@@ -225,7 +225,7 @@ MAKE_HOOK_OFFSETLESS(PlayFabAuthenticator_OnPlayFabError, void, GlobalNamespace:
     PlayFabAuthenticator_OnPlayFabError(self, obj);
 }
 
-MAKE_HOOK_OFFSETLESS(GorillaComputer_GeneralFailureMessage, void, GlobalNamespace::GorillaComputer* self, Il2CppString* failMessage)
+MAKE_HOOK_MATCH(GorillaComputer_GeneralFailureMessage, &GlobalNamespace::GorillaComputer::GeneralFailureMessage, void, GlobalNamespace::GorillaComputer* self, Il2CppString* failMessage)
 {
     GorillaComputer_GeneralFailureMessage(self, failMessage);
     if (failMessage && failMessage->Equals(self->versionMismatch)) // if the fail message is the version mismatch text
@@ -248,7 +248,7 @@ MAKE_HOOK_OFFSETLESS(GorillaComputer_GeneralFailureMessage, void, GlobalNamespac
     }
 }
 
-MAKE_HOOK_OFFSETLESS(VRRig_NormalizeName, Il2CppString*, GlobalNamespace::VRRig* self, bool doIt, Il2CppString* text)
+MAKE_HOOK_MATCH(VRRig_NormalizeName, &GlobalNamespace::VRRig::NormalizeName, Il2CppString*, GlobalNamespace::VRRig* self, bool doIt, Il2CppString* text)
 {
     return VRRig_NormalizeName(self, false, text);
 }
@@ -271,27 +271,16 @@ void loadlib()
 
     GorillaUtils::Init();
 
-    INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_Start, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "Start", 0));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_CheckAutoBanList, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "CheckAutoBanList", 1));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_BanMe, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "BanMe", 2));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), PlayFabAuthenticator_OnPlayFabError, il2cpp_utils::FindMethodUnsafe("", "PlayFabAuthenticator", "OnPlayFabError", 1));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), GorillaComputer_GeneralFailureMessage, il2cpp_utils::FindMethodUnsafe("", "GorillaComputer", "GeneralFailureMessage", 1));
-    INSTALL_HOOK_OFFSETLESS(getLogger(), VRRig_NormalizeName, il2cpp_utils::FindMethodUnsafe("", "VRRig", "NormalizeName", 2));
+    Logger& logger = getLogger();
+    INSTALL_HOOK(logger, GorillaComputer_Start);
+    INSTALL_HOOK(logger, GorillaComputer_CheckAutoBanList);
+    INSTALL_HOOK(logger, GorillaComputer_BanMe);
+    INSTALL_HOOK(logger, PlayFabAuthenticator_OnPlayFabError);
+    INSTALL_HOOK(logger, GorillaComputer_GeneralFailureMessage);
+    INSTALL_HOOK(logger, VRRig_NormalizeName);
     
     using namespace GorillaUI::Components;
-    custom_types::Register::RegisterTypes<CustomComputer, MonkeWatch, View, ViewManager, GorillaUI::Components::GorillaKeyboardButton, MonkeWatchButton, WatchActivatorTrigger, BillboardedWatch>();
-    custom_types::Register::RegisterTypes<ModSettingsViewManager, ModSettingsView, DetailView>();
-    custom_types::Register::RegisterTypes<MainViewManager, MainView, MainWatchView>();
-
-    custom_types::Register::RegisterTypes<ColorChangeView, NameChangeView, CustomRoomView, TurnChangeView, MicChangeView, GroupChangeView, QueueChangeView, VoiceChatView>();
-    custom_types::Register::RegisterTypes<BaseGameViewManager, BaseGameView>();
-    
-    custom_types::Register::RegisterTypes<PlayerView, PlayerViewManager, ReportView, ScoreboardView, ScoreboardViewManager>();
-    custom_types::Register::RegisterType<CommandLineView>();
-    custom_types::Register::RegisterType<CustomQueueView>();
-    custom_types::Register::RegisterType<MonkeComputerConfigView>();
-    custom_types::Register::RegisterType<BackgroundsView>();
-    custom_types::Register::RegisterType<WatchDetailView>();
+    custom_types::Register::AutoRegister();
 
     GorillaUI::Register::RegisterViewManager<BaseGameViewManager*>("Game Settings", "1.0.8");
     GorillaUI::Register::RegisterViewManager<ModSettingsViewManager*>("Mod Settings", VERSION);
@@ -307,6 +296,10 @@ void loadlib()
     
     GorillaUI::Register::RegisterWatchCallback("Disconnect", VERSION, []{
         BaseGameInterface::Disconnect();
+    });
+
+    GorillaUI::Register::RegisterWatchCallback("Master Client", VERSION, []{
+        Photon::Pun::PhotonNetwork::SetMasterClient(Photon::Pun::PhotonNetwork::get_LocalPlayer());
     });
 
     RegisterCommands();

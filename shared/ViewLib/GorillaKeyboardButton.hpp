@@ -3,7 +3,6 @@
 #include "custom-types/shared/macros.hpp"
 #include "../ViewLib/CustomComputer.hpp"
 #include "../EKeyboardKey.hpp"
-#include "../typedefs.h"
 
 #include "UnityEngine/Material.hpp"
 #include "UnityEngine/Color.hpp"
@@ -14,11 +13,11 @@ namespace GorillaUI
     class CustomComputer;   
 }
 DECLARE_CLASS_CODEGEN(GorillaUI::Components, GorillaKeyboardButton, GlobalNamespace::GorillaTriggerBox,
-    DECLARE_METHOD(void, OnTriggerEnter, UnityEngine::Collider* collider);
-    DECLARE_METHOD(void, OnTriggerExit, UnityEngine::Collider* collider);
-    DECLARE_METHOD(void, Awake);
-    DECLARE_METHOD(void, BumpIn);
-    DECLARE_METHOD(void, BumpOut);
+    DECLARE_INSTANCE_METHOD(void, OnTriggerEnter, UnityEngine::Collider* collider);
+    DECLARE_INSTANCE_METHOD(void, OnTriggerExit, UnityEngine::Collider* collider);
+    DECLARE_INSTANCE_METHOD(void, Awake);
+    DECLARE_INSTANCE_METHOD(void, BumpIn);
+    DECLARE_INSTANCE_METHOD(void, BumpOut);
     DECLARE_INSTANCE_FIELD(bool, isOnCooldown);
     DECLARE_INSTANCE_FIELD(bool, functionKey);
     DECLARE_INSTANCE_FIELD(UnityEngine::Material*, material);
@@ -33,16 +32,4 @@ DECLARE_CLASS_CODEGEN(GorillaUI::Components, GorillaKeyboardButton, GlobalNamesp
     private:
         UnityEngine::Color originalColor;
         GorillaUI::CustomComputer* computer;
-
-    REGISTER_FUNCTION(
-        REGISTER_METHOD(OnTriggerEnter);
-        REGISTER_METHOD(OnTriggerExit);
-        REGISTER_METHOD(Awake);
-        REGISTER_METHOD(BumpIn);
-        REGISTER_METHOD(BumpOut);
-        REGISTER_FIELD(isOnCooldown);
-        REGISTER_FIELD(material);
-        REGISTER_FIELD(pressTime);
-        REGISTER_FIELD(functionKey);
-    )
 )

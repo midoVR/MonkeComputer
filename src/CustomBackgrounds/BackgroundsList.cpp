@@ -2,7 +2,6 @@
 #include "quest-cosmetic-loader/shared/FileUtils.hpp"
 #include <algorithm>
 
-
 std::string toLower(std::string in)
 {
     std::string result;

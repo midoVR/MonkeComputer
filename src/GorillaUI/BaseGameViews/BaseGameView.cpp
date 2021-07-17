@@ -13,7 +13,7 @@
 #include "Helpers/SelectionHelper.hpp"
 #include "GorillaUI/BaseGameInterface.hpp"
 
-DEFINE_TYPE(GorillaUI::BaseGameView);
+DEFINE_TYPE(GorillaUI, BaseGameView);
 
 extern Logger& getLogger();
 
@@ -100,7 +100,7 @@ namespace GorillaUI
     void BaseGameView::DrawHeader()
     {
         std::string gameVer = BaseGameInterface::get_gameVersion();
-        text += string_format("<color=#ffff00>== <color=#fdfdfd>Settings</color> ==</color>\n", gameVer.c_str());
+        text += string_format("<color=#ffff00>== <color=#fdfdfd>Settings</color> ==</color>\n");
     }
     
     void BaseGameView::DrawViews()

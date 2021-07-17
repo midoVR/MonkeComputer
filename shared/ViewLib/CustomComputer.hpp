@@ -10,8 +10,6 @@
 #include "../ViewLib/ViewManager.hpp"
 #include "../ViewLib/View.hpp"
 
-#include "../typedefs.h"
-
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Vector3.hpp"
 #include "UnityEngine/Color.hpp"
@@ -29,11 +27,10 @@ namespace GorillaUI::Components {
 using keymap = std::map<GorillaUI::EKeyboardKey, GorillaUI::Components::GorillaKeyboardButton*>;
 
 DECLARE_CLASS_CODEGEN(GorillaUI, CustomComputer, UnityEngine::MonoBehaviour,
-    DECLARE_METHOD(void, PressButton, GorillaUI::Components::GorillaKeyboardButton* button);
-    DECLARE_METHOD(void, ReplaceKeys);
-    DECLARE_METHOD(static void, Redraw);
-    DECLARE_METHOD(void, SetBG, float r, float g, float b);
-    DECLARE_METHOD(void, SetBGTex, UnityEngine::Texture2D* tex);
+    DECLARE_INSTANCE_METHOD(void, ReplaceKeys);
+    DECLARE_STATIC_METHOD(void, Redraw);
+    DECLARE_INSTANCE_METHOD(void, SetBG, float r, float g, float b);
+    DECLARE_INSTANCE_METHOD(void, SetBGTex, UnityEngine::Texture2D* tex);
     DECLARE_INSTANCE_FIELD(bool, initialized);
     DECLARE_INSTANCE_FIELD(GlobalNamespace::GorillaComputer*, gorillaComputer);
 
@@ -50,16 +47,7 @@ DECLARE_CLASS_CODEGEN(GorillaUI, CustomComputer, UnityEngine::MonoBehaviour,
     public:
         GorillaUI::Components::ViewManager* activeViewManager = nullptr;
         void Init(GorillaUI::Components::View* initialView);
+        void PressButton(GorillaUI::Components::GorillaKeyboardButton* button);
 
         static CustomComputer* get_instance();
-
-    REGISTER_FUNCTION(
-        REGISTER_METHOD(PressButton);
-        REGISTER_METHOD(ReplaceKeys);
-        REGISTER_METHOD(SetBG);
-        REGISTER_METHOD(SetBGTex);
-        REGISTER_METHOD(Redraw);
-        REGISTER_FIELD(gorillaComputer);
-        REGISTER_FIELD(initialized);
-    )
 )

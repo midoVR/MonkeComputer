@@ -10,7 +10,7 @@
 
 #include "GlobalNamespace/GorillaTriggerColliderHandIndicator.hpp"
 #include "GlobalNamespace/GorillaTagger.hpp"
-DEFINE_TYPE(GorillaUI::Components::GorillaKeyboardButton);
+DEFINE_TYPE(GorillaUI::Components, GorillaKeyboardButton);
 
 #define KEY_BUMP_AMOUNT 0.2f
 #define PRESS_COOLDOWN 150

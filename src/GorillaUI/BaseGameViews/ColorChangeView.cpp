@@ -6,7 +6,7 @@
 #include "Helpers/SelectionHelper.hpp"
 
 
-DEFINE_TYPE(GorillaUI::ColorChangeView);
+DEFINE_TYPE(GorillaUI, ColorChangeView);
 
 extern Logger& getLogger();
 

@@ -7,7 +7,7 @@
 
 #include "config.hpp"
 
-DEFINE_TYPE(GorillaUI::CommandLineView);
+DEFINE_TYPE(GorillaUI, CommandLineView);
 
 extern Logger& getLogger();
 

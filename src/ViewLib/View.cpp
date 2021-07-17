@@ -1,7 +1,6 @@
 #include "ViewLib/View.hpp"
-#include "typedefs.h"
 
-DEFINE_TYPE(GorillaUI::Components::View);
+DEFINE_TYPE(GorillaUI::Components, View);
 
 extern Logger& getLogger();
 

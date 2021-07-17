@@ -1,5 +1,4 @@
 #include "GorillaUI.hpp"
-#include "typedefs.h"
 
 #include "UnityEngine/GameObject.hpp"
 #include "UnityEngine/Object.hpp"

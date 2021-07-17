@@ -7,24 +7,13 @@
 #include "GorillaUI/BaseGameViews/BaseGameViewManager.hpp"
 #include "GorillaUI/DetailView.hpp"
 
-DECLARE_CLASS_CODEGEN(GorillaUI, CustomQueueView, GorillaUI::Components::View, 
-    DECLARE_METHOD(void, Awake);
-    DECLARE_METHOD(void, JoinQueue, int index);
-    DECLARE_METHOD(void, DidActivate, bool firstActivation);
-    DECLARE_METHOD(void, Redraw);
-    DECLARE_METHOD(void, DrawHeader);
-    DECLARE_METHOD(void, DrawQueues);
-    DECLARE_METHOD(void, OnKeyPressed, int key);
+DECLARE_CLASS_CUSTOM(GorillaUI, CustomQueueView, GorillaUI::Components::View, 
+    DECLARE_INSTANCE_METHOD(void, Awake);
+    DECLARE_INSTANCE_METHOD(void, JoinQueue, int index);
+    DECLARE_INSTANCE_METHOD(void, DidActivate, bool firstActivation);
+    DECLARE_INSTANCE_METHOD(void, Redraw);
+    DECLARE_INSTANCE_METHOD(void, DrawHeader);
+    DECLARE_INSTANCE_METHOD(void, DrawQueues);
+    DECLARE_INSTANCE_METHOD(void, OnKeyPressed, int key);
     DECLARE_INSTANCE_FIELD(void*, selectionHandler);
-
-    REGISTER_FUNCTION(
-        REGISTER_METHOD(Awake);
-        REGISTER_METHOD(JoinQueue);
-        REGISTER_METHOD(DidActivate);
-        REGISTER_METHOD(Redraw);
-        REGISTER_METHOD(DrawHeader);
-        REGISTER_METHOD(DrawQueues);
-        REGISTER_METHOD(OnKeyPressed);
-        REGISTER_FIELD(selectionHandler);
-    )
 )

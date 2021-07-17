@@ -5,7 +5,7 @@
 
 using namespace UnityEngine;
 
-DEFINE_TYPE(GorillaUI::Components::BillboardedWatch);
+DEFINE_TYPE(GorillaUI::Components, BillboardedWatch);
 extern Logger& getLogger();
 
 namespace GorillaUI::Components

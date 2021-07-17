@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "typedefs.h"
 
 #include "UnityEngine/Color.hpp"
 

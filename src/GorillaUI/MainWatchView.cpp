@@ -1,11 +1,12 @@
 #include "GorillaUI/MainWatchView.hpp"
+
 #include "GorillaUI.hpp"
 #include "Register.hpp"
 #include "ViewLib/MonkeWatch.hpp"
 
 #include "Helpers/SelectionHelper.hpp"
 #include "Helpers/PageHelper.hpp"
-DEFINE_TYPE(GorillaUI::MainWatchView);
+DEFINE_TYPE(GorillaUI, MainWatchView);
 
 extern Logger& getLogger();
 

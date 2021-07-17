@@ -18,7 +18,7 @@
 
 #include "UnityEngine/Material.hpp"
 
-DEFINE_TYPE(GorillaUI::ReportView);
+DEFINE_TYPE(GorillaUI, ReportView);
 
 extern Logger& getLogger();
 

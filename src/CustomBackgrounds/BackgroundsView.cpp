@@ -8,7 +8,7 @@
 #include "Helpers/SelectionHelper.hpp"
 #include "quest-cosmetic-loader/shared/FileUtils.hpp"
 #include "config.hpp"
-DEFINE_TYPE(GorillaUI::BackgroundsView);
+DEFINE_TYPE(GorillaUI, BackgroundsView);
 
 #include "UnityEngine/Texture2D.hpp"
 

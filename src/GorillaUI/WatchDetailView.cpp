@@ -7,7 +7,7 @@
 #include "ViewLib/CustomScreenInfo.hpp"
 
 
-DEFINE_TYPE(GorillaUI::WatchDetailView);
+DEFINE_TYPE(GorillaUI, WatchDetailView);
 
 extern Logger& getLogger();
 

@@ -17,17 +17,12 @@ namespace GorillaUI
 }
 
 DECLARE_CLASS_CODEGEN(GorillaUI::Components, View, UnityEngine::MonoBehaviour, 
-    DECLARE_METHOD(void, Activate);
-    DECLARE_METHOD(void, Deactivate);
+    DECLARE_INSTANCE_METHOD(void, Activate);
+    DECLARE_INSTANCE_METHOD(void, Deactivate);
     DECLARE_INSTANCE_FIELD(bool, activatedBefore);
         
     public:
         std::string text = "";
         GorillaUI::CustomComputer* computer = nullptr;
         GorillaUI::MonkeWatch* watch = nullptr;
-    REGISTER_FUNCTION(
-        REGISTER_METHOD(Activate);
-        REGISTER_METHOD(Deactivate);
-        REGISTER_FIELD(activatedBefore);
-    )
 )

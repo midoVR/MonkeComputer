@@ -5,7 +5,7 @@
 #include "GorillaUI/BaseGameInterface.hpp"
 #include "Helpers/SelectionHelper.hpp"
 
-DEFINE_TYPE(GorillaUI::TurnChangeView);
+DEFINE_TYPE(GorillaUI, TurnChangeView);
 
 extern Logger& getLogger();
 

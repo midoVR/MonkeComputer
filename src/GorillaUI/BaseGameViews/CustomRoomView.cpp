@@ -7,7 +7,7 @@
 
 #include "UnityEngine/Time.hpp"
 
-DEFINE_TYPE(GorillaUI::CustomRoomView);
+DEFINE_TYPE(GorillaUI, CustomRoomView);
 
 extern Logger& getLogger();
 
@@ -23,8 +23,8 @@ namespace GorillaUI
 
     void CustomRoomView::DidDeactivate()
     {
-        GorillaUtils::MatchMakingCallbacks::remove_OnJoinRoomFailed(onJoinRoomFailedIdentifier);
-        GorillaUtils::MatchMakingCallbacks::remove_OnJoinedRoom(onJoinRoomFailedIdentifier);
+        GorillaUtils::MatchMakingCallbacks::onJoinedRoomEvent() -= {&CustomRoomView::OnJoinedRoom, this};
+        GorillaUtils::MatchMakingCallbacks::onJoinRoomFailedEvent() -= {&CustomRoomView::OnJoinRoomFailed, this};
     }
 
     void CustomRoomView::DidActivate(bool firstActivation)
@@ -35,13 +35,18 @@ namespace GorillaUI
         Redraw();
         lastUpdatedTime = UnityEngine::Time::get_time();
 
-        onJoinRoomFailedIdentifier = GorillaUtils::MatchMakingCallbacks::add_OnJoinRoomFailed([&](short error, std::string message){
-            Redraw();
-        });
+        GorillaUtils::MatchMakingCallbacks::onJoinedRoomEvent() += {&CustomRoomView::OnJoinedRoom, this};
+        GorillaUtils::MatchMakingCallbacks::onJoinRoomFailedEvent() += {&CustomRoomView::OnJoinRoomFailed, this};
+    }
 
-        onJoinedRoomIdentifier = GorillaUtils::MatchMakingCallbacks::add_OnJoinedRoom([&](){
-            Redraw();
-        });
+    void CustomRoomView::OnJoinedRoom()
+    {
+        Redraw();
+    }
+
+    void CustomRoomView::OnJoinRoomFailed(short error, std::string message)
+    {
+        Redraw();
     }
 
     void CustomRoomView::Update()

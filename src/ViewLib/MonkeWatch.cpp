@@ -21,7 +21,7 @@
 #include "config.hpp"
 
 #include "quest-cosmetic-loader/shared/CosmeticLoader.hpp"
-DEFINE_TYPE(GorillaUI::MonkeWatch);
+DEFINE_TYPE(GorillaUI, MonkeWatch);
 
 using namespace GorillaUI::Components;
 using namespace UnityEngine;

@@ -5,7 +5,7 @@
 #include "beatsaber-hook/shared/utils/utils.h"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 
-DEFINE_TYPE(GorillaUI::PlayerViewManager);
+DEFINE_TYPE(GorillaUI, PlayerViewManager);
 
 using namespace GorillaUI::Components;
 

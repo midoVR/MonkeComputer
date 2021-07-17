@@ -1,12 +1,11 @@
 #include "ViewLib/ViewManager.hpp"
 #include "ViewLib/MonkeWatch.hpp"
 #include "KeyExtension.hpp"
-#include "typedefs.h"
 #include "ViewLib/CustomComputer.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-utils.hpp"
 #include "beatsaber-hook/shared/utils/il2cpp-functions.hpp"
 
-DEFINE_TYPE(GorillaUI::Components::ViewManager);
+DEFINE_TYPE(GorillaUI::Components, ViewManager);
 
 extern Logger& getLogger();
 

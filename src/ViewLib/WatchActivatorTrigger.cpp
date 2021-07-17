@@ -8,7 +8,7 @@
 #include "GlobalNamespace/GorillaTriggerColliderHandIndicator.hpp"
 #include "GlobalNamespace/GorillaTagger.hpp"
 
-DEFINE_TYPE(GorillaUI::Components::WatchActivatorTrigger);
+DEFINE_TYPE(GorillaUI::Components, WatchActivatorTrigger);
 
 using namespace UnityEngine;
 

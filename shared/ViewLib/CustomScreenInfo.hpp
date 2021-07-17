@@ -1,7 +1,6 @@
 #pragma once
 #include "beatsaber-hook/shared/utils/typedefs.h"
 #include "beatsaber-hook/shared/utils/typedefs-wrappers.hpp"
-#include "../typedefs.h"
 
 #include "UnityEngine/UI/Text.hpp"
 #include "UnityEngine/Transform.hpp"

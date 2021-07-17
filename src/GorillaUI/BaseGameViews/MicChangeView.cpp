@@ -3,7 +3,7 @@
 #include "Helpers/SelectionHelper.hpp"
 #include "GorillaUI/BaseGameInterface.hpp"
 
-DEFINE_TYPE(GorillaUI::MicChangeView);
+DEFINE_TYPE(GorillaUI, MicChangeView);
 
 extern Logger& getLogger();
 

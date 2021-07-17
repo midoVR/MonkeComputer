@@ -5,7 +5,7 @@
 #include "GorillaUI/BaseGameInterface.hpp"
 #include "Helpers/SelectionHelper.hpp"
 
-DEFINE_TYPE(GorillaUI::VoiceChatView);
+DEFINE_TYPE(GorillaUI, VoiceChatView);
 
 extern Logger& getLogger();
 

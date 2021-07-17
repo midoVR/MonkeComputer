@@ -21,7 +21,7 @@
 #include "GlobalNamespace/GorillaScoreBoard.hpp"
 #include "GlobalNamespace/GorillaPlayerLineButton.hpp"
 
-DEFINE_TYPE(GorillaUI::PlayerView);
+DEFINE_TYPE(GorillaUI, PlayerView);
 
 extern Logger& getLogger();
 

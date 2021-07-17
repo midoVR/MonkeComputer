@@ -198,7 +198,7 @@ jobs:
     - name: Restore Activator
       run: |
         cd ${GITHUB_WORKSPACE}/MonkeComputerActivator
-        qpm restore
+        ./QPM/QPM restore
     
     - name: Use newly Built monkecomputer
       run: |

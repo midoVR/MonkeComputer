@@ -22,14 +22,13 @@
       "downloadIfMissing": "https://github.com/RedBrumbler/GorillaUtils/releases/latest/download/GorillaUtils.qmod"
     }
   ],
-  "modFiles": [
-    "libmonkecomputer.so"
-  ],
+  "modFiles": [],
   "libraryFiles": [
     "libbeatsaber-hook_2_0_3.so",
     "libcustom-types.so",
     "libquest-cosmetic-loader_0_2_1.so",
-    "libzip.so"
+    "libzip.so",
+    "libmonkecomputer.so"
   ],
   "fileCopies": [
     {

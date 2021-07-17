@@ -41,7 +41,7 @@ foreach ($lib in $allLibs)
     {
         continue
     }
-    # if its the actual mod lib
+    # if its the actual mod lib (for computer this is not used though)
     else
     {
         if ($lib.Contains($env:module_id))
@@ -70,7 +70,9 @@ $qpm = "./qpm.json"
 $qpmJson = Get-Content $qpm | ConvertFrom-Json 
 $modJson.version = $qpmJson.info.version
 
-$modJson.modFiles = $modlib
+# add the thing to the libs list because we don't need it as a mod file
+$libs += ,$modlib[0]
+#$modJson.modFiles = $modlib
 $modJson.libraryFiles = $libs
 $modText = $modJson | ConvertTo-Json -Depth 50 -EscapeHandling EscapeNonAscii
 

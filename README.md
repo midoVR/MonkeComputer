@@ -226,3 +226,10 @@ I do have a ko-fi, but it's never really been used nad I don't check it regularl
 
 -----
 
+# Credits
+
+ - [beatsaber-hook](https://github.com/sc2ad/beatsaber-hook)
+ - [custom-types](https://github.com/sc2ad/Il2CppQuestTypePatching)
+ - [monkecodegen](https://github.com/RedBrumbler/MonkeCodegen)
+ - [gorilla-utils](https://github.com/RedBrumbler/GorillaUtils)
+ - [quest-cosmetic-loader](https://github.com/RedBrumbler/QuestCosmeticLoader)
